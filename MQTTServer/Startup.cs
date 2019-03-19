@@ -11,54 +11,54 @@ using MQTTnet.AspNetCore;
 
 namespace MQTTServer
 {
-    public class Startup
+  public class Startup
+  {
+    public void ConfigureServices(IServiceCollection services)
     {
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddHostedMqttServer(builder => builder.WithoutDefaultEndpoint());
-            services.AddMqttConnectionHandler();
-            services.AddMqttWebSocketServerAdapter();
-        }
-
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            app.UseMqttEndpoint();
-            app.UseMqttServer(server =>
-            {
-                server.Started += async (sender, args) =>
-                {
-                var msg = new MqttApplicationMessageBuilder()
-                        .WithPayload("Mqtt is awesome")
-                        .WithTopic("message");
-
-                while (true)
-                {
-                    try
-                    {
-                    await server.PublishAsync(msg.Build());
-                    msg.WithPayload("Mqtt is still awesome at " + DateTime.Now);
-                    }
-                    catch (Exception e)
-                    {
-                    Console.WriteLine(e);
-                    }
-                    finally
-                    {
-                    await Task.Delay(TimeSpan.FromSeconds(2));
-                    }
-                }
-                };
-            });
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
-        }
+      services.AddHostedMqttServer(builder => builder.WithoutDefaultEndpoint());
+      services.AddMqttConnectionHandler();
+      services.AddMqttWebSocketServerAdapter();
     }
+
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+      app.UseMqttEndpoint();
+      app.UseMqttServer(server =>
+      {
+        server.Started += async (sender, args) =>
+          {
+            var msg = new MqttApplicationMessageBuilder()
+                          .WithPayload("Mqtt is awesome")
+                          .WithTopic("message");
+
+            while (true)
+            {
+              try
+              {
+                await server.PublishAsync(msg.Build());
+                msg.WithPayload("Mqtt is still awesome at " + DateTime.Now);
+              }
+              catch (Exception e)
+              {
+                Console.WriteLine(e);
+              }
+              finally
+              {
+                await Task.Delay(TimeSpan.FromSeconds(2));
+              }
+            }
+          };
+      });
+
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
+
+      app.Run(async (context) =>
+      {
+        await context.Response.WriteAsync("Hello World!");
+      });
+    }
+  }
 }

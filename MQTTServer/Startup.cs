@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using MQTTnet;
 using MQTTnet.AspNetCore;
+using MqttServer;
 
 namespace MQTTServer
 {
@@ -23,32 +24,8 @@ namespace MQTTServer
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
       app.UseMqttEndpoint();
-      app.UseMqttServer(server =>
-      {
-        server.Started += async (sender, args) =>
-          {
-            var msg = new MqttApplicationMessageBuilder()
-                          .WithPayload("Mqtt is awesome")
-                          .WithTopic("message");
-
-            while (true)
-            {
-              try
-              {
-                await server.PublishAsync(msg.Build());
-                msg.WithPayload("Mqtt is still awesome at " + DateTime.Now);
-              }
-              catch (Exception e)
-              {
-                Console.WriteLine(e);
-              }
-              finally
-              {
-                await Task.Delay(TimeSpan.FromSeconds(2));
-              }
-            }
-          };
-      });
+      // use a custom implementation of the mqtt server from a separate file (CustomMqttServerExtensions.cs)
+      app.UseCustomMqttServer();
 
       if (env.IsDevelopment())
       {

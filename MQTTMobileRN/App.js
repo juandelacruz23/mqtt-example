@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import init from 'react_native_mqtt';
-import { AsyncStorage, StyleSheet, Text, View } from 'react-native';
+import { AsyncStorage, FlatList, StyleSheet, } from 'react-native';
+import { Divider } from 'react-native-paper';
+import MqttItem from './Components/MqttItem';
 
 init({
   size: 10000,
@@ -12,8 +14,7 @@ init({
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
   },
 });
 
@@ -55,11 +56,14 @@ export default class App extends Component {
 
   render() {
     const { text } = this.state;
-
     return (
-      <View style={styles.container}>
-        {text.map(entry => <Text>{entry}</Text>)}
-      </View>
+      <FlatList
+        data={text}
+        ItemSeparatorComponent={() => <Divider />}
+        keyExtractor={(item, index) => `item${index}`}
+        renderItem={({ item }) => <MqttItem text={item} />}
+        style={styles.container} 
+      />
     );
   }
 }

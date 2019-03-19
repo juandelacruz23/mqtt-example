@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import init from 'react_native_mqtt';
-import { AsyncStorage, FlatList, StyleSheet, } from 'react-native';
+import { AsyncStorage, FlatList, StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import MqttItem from './Components/MqttItem';
+import ConnectionFAB from './Components/ConnectionFAB';
 
 init({
   size: 10000,
@@ -57,13 +58,16 @@ export default class App extends Component {
   render() {
     const { text } = this.state;
     return (
-      <FlatList
-        data={text}
-        ItemSeparatorComponent={() => <Divider />}
-        keyExtractor={(item, index) => `item${index}`}
-        renderItem={({ item }) => <MqttItem text={item} />}
-        style={styles.container} 
-      />
+      <View style={styles.container}>
+        <FlatList
+          data={text}
+          ItemSeparatorComponent={() => <Divider />}
+          keyExtractor={(item, index) => `item${index}`}
+          renderItem={({ item }) => <MqttItem text={item} />}
+          style={styles.container}
+        />
+        <ConnectionFAB />
+      </View>
     );
   }
 }

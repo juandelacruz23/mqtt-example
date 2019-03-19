@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MQTTnet.AspNetCore;
 
 namespace MQTTServer
 {
@@ -19,6 +20,10 @@ namespace MQTTServer
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel(o => {
+                    o.ListenAnyIP(1883, l => l.UseMqtt());
+                    o.ListenAnyIP(5000);
+                })
                 .UseStartup<Startup>();
     }
 }

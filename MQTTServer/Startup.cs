@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,20 +6,50 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using MQTTnet;
+using MQTTnet.AspNetCore;
 
 namespace MQTTServer
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHostedMqttServer(builder => builder.WithoutDefaultEndpoint());
+            services.AddMqttConnectionHandler();
+            services.AddMqttWebSocketServerAdapter();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseMqttEndpoint();
+            app.UseMqttServer(server =>
+            {
+                server.Started += async (sender, args) =>
+                {
+                var msg = new MqttApplicationMessageBuilder()
+                        .WithPayload("Mqtt is awesome")
+                        .WithTopic("message");
+
+                while (true)
+                {
+                    try
+                    {
+                    await server.PublishAsync(msg.Build());
+                    msg.WithPayload("Mqtt is still awesome at " + DateTime.Now);
+                    }
+                    catch (Exception e)
+                    {
+                    Console.WriteLine(e);
+                    }
+                    finally
+                    {
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+                    }
+                }
+                };
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

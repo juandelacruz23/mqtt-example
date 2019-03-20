@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import init from 'react_native_mqtt';
 import { AsyncStorage, FlatList, StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-paper';
+import Config from 'react-native-config';
 import MqttItem from './Components/MqttItem';
 import ConnectionFAB from './Components/ConnectionFAB';
 import statuses from './statuses';
@@ -24,7 +25,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
-    this.client = new Paho.MQTT.Client('192.168.1.131', 5000, 'uname');
+    this.client = new Paho.MQTT.Client(Config.MQTT_HOST, Number(Config.MQTT_PORT), Config.MQTT_CLIENT_ID);
     this.client.onConnectionLost = this.onConnectionLost;
     this.client.onMessageArrived = this.onMessageArrived;
     this.client.connect({ onSuccess: this.onConnect, useSSL: false })

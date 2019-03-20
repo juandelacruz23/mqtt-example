@@ -5,5 +5,5 @@ Example projects of basic MQTT implementations in different platforms.
 - ASP.NET Core with web sockets
 
 ## Client side
-- React Native (coming soon)
+- React Native
 - React (coming soon)

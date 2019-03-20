@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
-import init from 'react_native_mqtt';
-import { AsyncStorage, FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-paper';
-import Config from 'react-native-config';
 import MqttItem from './Components/MqttItem';
 import ConnectionFAB from './Components/ConnectionFAB';
 import statuses from './statuses';
-
-init({
-  size: 10000,
-  storageBackend: AsyncStorage,
-  defaultExpires: 1000 * 3600 * 24,
-  enableCache: true,
-  sync: {},
-});
+import MQTTComponent from './Headless/MQTTComponent';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,16 +15,11 @@ const styles = StyleSheet.create({
 export default class App extends Component {
   constructor(props) {
     super(props);
-
-    this.client = new Paho.MQTT.Client(Config.MQTT_HOST, Number(Config.MQTT_PORT), Config.MQTT_CLIENT_ID);
-    this.client.onConnectionLost = this.onConnectionLost;
-    this.client.onMessageArrived = this.onMessageArrived;
-    this.client.connect({ onSuccess: this.onConnect, useSSL: false })
-
     this.state = {
       text: ['...'],
       status: statuses.DISCONNECTED,
     };
+    this.mqttComponent = React.createRef();
   }
 
   pushText = entry => {
@@ -43,12 +29,12 @@ export default class App extends Component {
 
   onClickFAB = () => {
     const { status } = this.state;
-    const { client } = this;
+    const { current : mqttComponent } = this.mqttComponent;
     if(status === statuses.CONNECTED) {
-      client.unsubscribe('message', { onSuccess: () => this.setStatus(statuses.DISCONNECTED) });
+      mqttComponent.unsubscribe('message', { onSuccess: () => this.setStatus(statuses.DISCONNECTED) });
     }
     else {
-      client.subscribe('message', { onSuccess: () => this.setStatus(statuses.CONNECTED) });
+      mqttComponent.subscribe('message', { onSuccess: () => this.setStatus(statuses.CONNECTED) });
     }
   };
 
@@ -82,6 +68,12 @@ export default class App extends Component {
         <ConnectionFAB
           status={status}
           onClick={this.onClickFAB}
+        />
+        <MQTTComponent 
+          onConnect={this.onConnect}
+          onConnectionLost={this.onConnectionLost}
+          onMessageArrived={this.onMessageArrived}
+          ref={this.mqttComponent}
         />
       </View>
     );

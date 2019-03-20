@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import init from 'react_native_mqtt';
-import { AsyncStorage, StyleSheet, Text, View } from 'react-native';
+import { AsyncStorage, FlatList, StyleSheet, View } from 'react-native';
+import { Divider } from 'react-native-paper';
+import MqttItem from './Components/MqttItem';
+import ConnectionFAB from './Components/ConnectionFAB';
+import statuses from './statuses';
 
 init({
   size: 10000,
@@ -12,8 +16,7 @@ init({
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
   },
 });
 
@@ -21,14 +24,14 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
-    const client = new Paho.MQTT.Client('192.168.1.68', 5000, 'uname');
-    client.onConnectionLost = this.onConnectionLost;
-    client.onMessageArrived = this.onMessageArrived;
-    client.connect({ onSuccess: this.onConnect, useSSL: false });
+    this.client = new Paho.MQTT.Client('192.168.1.131', 5000, 'uname');
+    this.client.onConnectionLost = this.onConnectionLost;
+    this.client.onMessageArrived = this.onMessageArrived;
+    this.client.connect({ onSuccess: this.onConnect, useSSL: false })
 
     this.state = {
       text: ['...'],
-      client,
+      status: statuses.DISCONNECTED,
     };
   }
 
@@ -37,11 +40,22 @@ export default class App extends Component {
     this.setState({ text: [...text, entry] });
   };
 
-  onConnect = () => {
-    const { client } = this.state;
-    client.subscribe('message');
-    this.pushText('connected');
+  onClickFAB = () => {
+    const { status } = this.state;
+    const { client } = this;
+    if(status === statuses.CONNECTED) {
+      client.unsubscribe('message', { onSuccess: () => this.setStatus(statuses.DISCONNECTED) });
+    }
+    else {
+      client.subscribe('message', { onSuccess: () => this.setStatus(statuses.CONNECTED) });
+    }
   };
+
+  setStatus = status => {
+    this.setState({ status });
+  };
+
+  onConnect = () => this.pushText('Connected');  
 
   onConnectionLost = responseObject => {
     if (responseObject.errorCode !== 0) {
@@ -54,11 +68,20 @@ export default class App extends Component {
   };
 
   render() {
-    const { text } = this.state;
-
+    const { status, text } = this.state;
     return (
       <View style={styles.container}>
-        {text.map(entry => <Text>{entry}</Text>)}
+        <FlatList
+          data={text}
+          ItemSeparatorComponent={() => <Divider />}
+          keyExtractor={(item, index) => `item${index}`}
+          renderItem={({ item }) => <MqttItem text={item} />}
+          style={styles.container}
+        />
+        <ConnectionFAB
+          status={status}
+          onClick={this.onClickFAB}
+        />
       </View>
     );
   }

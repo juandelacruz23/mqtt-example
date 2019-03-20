@@ -1,0 +1,4 @@
+export default {
+  CONNECTED: 'CONNECTED',
+  DISCONNECTED: 'DISCONNECTED',
+};

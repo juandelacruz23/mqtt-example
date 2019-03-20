@@ -2,14 +2,15 @@ import React from 'react';
 import { StyleSheet } from "react-native";
 import { FAB } from 'react-native-paper';
 import Icon from "react-native-vector-icons/Feather";
+import statuses from '../statuses';
 
-const ConnectionFAB = () => {
-
+const ConnectionFAB = ({ onClick, status }) => {
+  const icon = status === statuses.DISCONNECTED ? 'play' : 'pause';
   return (
     <FAB
       style={styles.fab}
-      icon={() => <Icon name="play" size={20} style={styles.icon} /> }
-      onPress={() => console.log('Pressed')}
+      icon={() => <Icon name={icon} size={20} style={styles.icon} /> }
+      onPress={onClick}
     />
   );
 };

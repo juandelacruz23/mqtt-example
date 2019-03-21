@@ -21,6 +21,7 @@ const MQTTConfigurationForm = props => (
           />
         </View>
         <TextInput
+          autoCapitalize='none'
           label='Topic'
           value={props.topic}
           onChangeText={props.onChangeTopic}

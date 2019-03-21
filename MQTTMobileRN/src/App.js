@@ -68,6 +68,7 @@ export default class App extends Component {
       port,
       topic,
     } = this.state;
+    const isFilled = host && port && topic;
     return (
       <View style={styles.container}>
         <MQTTConfigurationForm
@@ -86,6 +87,7 @@ export default class App extends Component {
           style={styles.container}
         />
         <ConnectionFAB
+          disabled={!isFilled}
           status={status}
           onClick={this.onClickFAB}
         />

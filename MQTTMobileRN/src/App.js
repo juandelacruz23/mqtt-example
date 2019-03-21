@@ -23,7 +23,6 @@ export default class App extends Component {
       port: '',
       topic: '',
     };
-    this.mqttComponent = React.createRef();
   }
 
   pushText = entry => {
@@ -33,13 +32,8 @@ export default class App extends Component {
 
   onClickFAB = () => {
     const { status } = this.state;
-    const { current : mqttComponent } = this.mqttComponent;
-    if(status === statuses.CONNECTED) {
-      mqttComponent.unsubscribe('message', { onSuccess: () => this.setStatus(statuses.DISCONNECTED) });
-    }
-    else {
-      mqttComponent.subscribe('message', { onSuccess: () => this.setStatus(statuses.CONNECTED) });
-    }
+    if(status === statuses.CONNECTED) this.setStatus(statuses.DISCONNECTED);
+    else this.setStatus(statuses.CONNECTED)
   };
 
   setStatus = status => {
@@ -59,6 +53,8 @@ export default class App extends Component {
   };
 
   onChange = value => this.setState(value);
+
+  onSubscribe = () => this.pushText('SUBSCRIBED');
 
   render() {
     const { 
@@ -91,12 +87,16 @@ export default class App extends Component {
           status={status}
           onClick={this.onClickFAB}
         />
+        { status === statuses.CONNECTED && 
         <MQTTComponent 
           onConnect={this.onConnect}
           onConnectionLost={this.onConnectionLost}
           onMessageArrived={this.onMessageArrived}
-          ref={this.mqttComponent}
-        />
+          onSubscribe={this.onSubscribe}
+          host={host}
+          port={port}
+          topic={topic}
+        />}
       </View>
     );
   }

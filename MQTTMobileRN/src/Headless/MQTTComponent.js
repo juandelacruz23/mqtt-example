@@ -1,6 +1,5 @@
 import { PureComponent } from 'react';
 import { AsyncStorage } from "react-native";
-import Config from 'react-native-config';
 import init from 'react_native_mqtt';
 
 init({
@@ -12,29 +11,31 @@ init({
 });
 
 class MQTTComponent extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.client = new Paho.MQTT.Client(Config.MQTT_HOST, Number(Config.MQTT_PORT), Config.MQTT_CLIENT_ID);
+  componentDidMount() {
+    const { 
+      onConnectionLost,
+      onMessageArrived,
+      host,
+      port,
+    } = this.props;
+    this.client = new Paho.MQTT.Client(host, Number(port), 'uname');
+    this.client.onConnectionLost = onConnectionLost;
+    this.client.onMessageArrived = onMessageArrived;
+    this.client.connect({ onSuccess: this.onConnect, useSSL: false })
   }
 
-  componentDidMount() {
-    const { client } = this;
-    const { onConnect, onConnectionLost, onMessageArrived } = this.props;
-    client.connect({ onSuccess: onConnect, useSSL: false })
-    client.onConnectionLost = onConnectionLost;
-    client.onMessageArrived = onMessageArrived;
+  onConnect = () => {
+    this.props.onConnect();
+    this.subscribe();
   }
 
   componentWillUnmount() {
     this.client.disconnect()
   }
 
-  subscribe(topic, options) {
-    this.client.subscribe(topic, options);
-  }
-
-  unsubscribe(topic, options) {
-    this.client.unsubscribe(topic, options);
+  subscribe() {
+    const { topic } = this.props;
+    this.client.subscribe(topic, { onSuccess: this.props.onSubscribe });
   }
 
   render() {

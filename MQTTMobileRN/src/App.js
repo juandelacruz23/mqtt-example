@@ -5,6 +5,7 @@ import MqttItem from './Components/MqttItem';
 import ConnectionFAB from './Components/ConnectionFAB';
 import statuses from './statuses';
 import MQTTComponent from './Headless/MQTTComponent';
+import MQTTConfigurationForm from './Containers/MQTTConfigurationForm';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,6 +19,9 @@ export default class App extends Component {
     this.state = {
       text: ['...'],
       status: statuses.DISCONNECTED,
+      host: '',
+      port: '',
+      topic: '',
     };
     this.mqttComponent = React.createRef();
   }
@@ -54,10 +58,26 @@ export default class App extends Component {
     this.pushText(`new message: ${message.payloadString}`);
   };
 
+  onChange = value => this.setState(value);
+
   render() {
-    const { status, text } = this.state;
+    const { 
+      status,
+      text,
+      host,
+      port,
+      topic,
+    } = this.state;
     return (
       <View style={styles.container}>
+        <MQTTConfigurationForm
+          host={host}
+          port={port}
+          topic={topic}
+          onChangeHost={host => this.onChange({ host })}
+          onChangePort={port => this.onChange({ port })}
+          onChangeTopic={topic => this.onChange({ topic })}
+        />
         <FlatList
           data={text}
           ItemSeparatorComponent={() => <Divider />}

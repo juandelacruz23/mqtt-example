@@ -5,7 +5,7 @@ import MqttItem from './Components/MqttItem';
 import ConnectionFAB from './Components/ConnectionFAB';
 import statuses from './statuses';
 import MQTTComponent from './Headless/MQTTComponent';
-import MQTTConfigurationForm from './Containers/MQTTConfigurationForm';
+import MQTTConfigurationForm from './Groups/MQTTConfigurationForm';
 
 const styles = StyleSheet.create({
   container: {

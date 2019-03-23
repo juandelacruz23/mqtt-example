@@ -23,6 +23,7 @@ export default class App extends Component {
       port: '',
       topic: '',
     };
+    this.mqttComponent = React.createRef();
   }
 
   pushText = entry => {
@@ -32,15 +33,21 @@ export default class App extends Component {
 
   onClickConnectionButton = () => {
     const { connectionStatus } = this.state;
-    if(connectionStatus === connectionStatuses.CONNECTED) this.setStatus(connectionStatuses.DISCONNECTED);
-    else this.setStatus(connectionStatuses.CONNECTED)
+    const { current : mqttComponent } = this.mqttComponent;
+    if(connectionStatus === connectionStatuses.CONNECTED) {
+      mqttComponent.disconnect();
+      this.setConnectionStatus(connectionStatuses.DISCONNECTED, () => this.pushText('Disconnected'));
+    }
+    else mqttComponent.connect();
   };
 
-  setStatus = connectionStatus => {
-    this.setState({ connectionStatus });
-  };
+  setConnectionStatus = (connectionStatus, callback) => this.setState({ connectionStatus }, callback);
 
-  onConnect = () => this.pushText('Connected');  
+  onConnect = () => 
+    this.setConnectionStatus(
+      connectionStatuses.CONNECTED,
+      () => this.pushText('Connected')
+    );
 
   onConnectionLost = responseObject => {
     if (responseObject.errorCode !== 0) {
@@ -87,7 +94,6 @@ export default class App extends Component {
           renderItem={({ item }) => <MqttItem text={item} />}
           style={styles.container}
         />
-        { connectionStatus === connectionStatuses.CONNECTED && 
         <MQTTComponent 
           onConnect={this.onConnect}
           onConnectionLost={this.onConnectionLost}
@@ -96,7 +102,8 @@ export default class App extends Component {
           host={host}
           port={port}
           topic={topic}
-        />}
+          ref={this.mqttComponent}
+        />
       </View>
     );
   }

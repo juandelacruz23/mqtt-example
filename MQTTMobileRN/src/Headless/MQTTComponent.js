@@ -11,7 +11,7 @@ init({
 });
 
 class MQTTComponent extends PureComponent {
-  componentDidMount() {
+  connect() {
     const { 
       onConnectionLost,
       onMessageArrived,
@@ -21,12 +21,12 @@ class MQTTComponent extends PureComponent {
     this.client = new Paho.MQTT.Client(host, Number(port), 'uname');
     this.client.onConnectionLost = onConnectionLost;
     this.client.onMessageArrived = onMessageArrived;
-    this.client.connect({ onSuccess: this.onConnect, useSSL: false })
+    this.client.connect({ onSuccess: this.props.onConnect, useSSL: false })    
   }
 
-  onConnect = () => {
-    this.props.onConnect();
-    this.subscribe();
+  disconnect() {
+    this.client.disconnect();
+    this.client = null;
   }
 
   componentWillUnmount() {

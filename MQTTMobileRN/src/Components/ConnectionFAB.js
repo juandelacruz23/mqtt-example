@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet } from "react-native";
 import { FAB } from 'react-native-paper';
-import statuses from '../statuses';
+import { connectionStatuses } from '../statuses';
 
 const ConnectionFAB = ({ disabled, onClick, status }) => {
-  const icon = status === statuses.DISCONNECTED ? 'play-arrow' : 'pause';
+  const icon = status === connectionStatuses.DISCONNECTED ? 'play-arrow' : 'pause';
   return (
     <FAB
       style={styles.fab}

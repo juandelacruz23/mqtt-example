@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import MqttItem from './Components/MqttItem';
 import ConnectionFAB from './Components/ConnectionFAB';
-import statuses from './statuses';
+import { connectionStatuses } from './statuses';
 import MQTTComponent from './Headless/MQTTComponent';
 import MQTTConfigurationForm from './Groups/MQTTConfigurationForm';
 import MQTTConfigurationButtons from './Groups/MQTTConfigurationButtons';
@@ -19,7 +19,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       text: ['...'],
-      status: statuses.DISCONNECTED,
+      connectionStatus: connectionStatuses.DISCONNECTED,
       host: '',
       port: '',
       topic: '',
@@ -32,13 +32,13 @@ export default class App extends Component {
   };
 
   onClickFAB = () => {
-    const { status } = this.state;
-    if(status === statuses.CONNECTED) this.setStatus(statuses.DISCONNECTED);
-    else this.setStatus(statuses.CONNECTED)
+    const { connectionStatus } = this.state;
+    if(connectionStatus === connectionStatuses.CONNECTED) this.setStatus(connectionStatuses.DISCONNECTED);
+    else this.setStatus(connectionStatuses.CONNECTED)
   };
 
-  setStatus = status => {
-    this.setState({ status });
+  setStatus = connectionStatus => {
+    this.setState({ connectionStatus });
   };
 
   onConnect = () => this.pushText('Connected');  
@@ -59,7 +59,7 @@ export default class App extends Component {
 
   render() {
     const { 
-      status,
+      connectionStatus,
       text,
       host,
       port,
@@ -86,10 +86,10 @@ export default class App extends Component {
         />
         <ConnectionFAB
           disabled={!isFilled}
-          status={status}
+          status={connectionStatus}
           onClick={this.onClickFAB}
         />
-        { status === statuses.CONNECTED && 
+        { connectionStatus === connectionStatuses.CONNECTED && 
         <MQTTComponent 
           onConnect={this.onConnect}
           onConnectionLost={this.onConnectionLost}

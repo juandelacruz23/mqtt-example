@@ -6,6 +6,7 @@ import ConnectionFAB from './Components/ConnectionFAB';
 import statuses from './statuses';
 import MQTTComponent from './Headless/MQTTComponent';
 import MQTTConfigurationForm from './Groups/MQTTConfigurationForm';
+import MQTTConfigurationButtons from './Groups/MQTTConfigurationButtons';
 
 const styles = StyleSheet.create({
   container: {
@@ -75,6 +76,7 @@ export default class App extends Component {
           onChangePort={port => this.onChange({ port })}
           onChangeTopic={topic => this.onChange({ topic })}
         />
+        <MQTTConfigurationButtons />
         <FlatList
           data={text}
           ItemSeparatorComponent={() => <Divider />}

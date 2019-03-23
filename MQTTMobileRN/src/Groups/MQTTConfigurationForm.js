@@ -11,6 +11,7 @@ const MQTTConfigurationForm = props => (
             onChangeText={props.onChangeHost}
             style={[styles.input, { flex: 4 }]}
             keyboardType="numeric"
+            disabled={props.disableInputs}
           />
           <TextInput
             label='Port'
@@ -18,6 +19,7 @@ const MQTTConfigurationForm = props => (
             onChangeText={props.onChangePort}
             style={[styles.input, { flex: 2 }]}
             keyboardType="numeric"
+            disabled={props.disableInputs}
           />
         </View>
         <TextInput
@@ -26,6 +28,7 @@ const MQTTConfigurationForm = props => (
           value={props.topic}
           onChangeText={props.onChangeTopic}
           style={styles.input}
+          disabled={props.disableInputs}
         />
       </View>
     );

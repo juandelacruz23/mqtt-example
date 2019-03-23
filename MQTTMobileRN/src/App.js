@@ -38,6 +38,7 @@ export default class App extends Component {
     if(connectionStatus === connectionStatuses.CONNECTED) {
       mqttComponent.disconnect();
       this.setConnectionStatus(connectionStatuses.DISCONNECTED, () => this.pushText('Disconnected'));
+      this.setSubscriptionStatus(subscriptionStatuses.UNSUBSCRIBED);
     }
     else mqttComponent.connect();
   };
@@ -102,6 +103,7 @@ export default class App extends Component {
           onChangeHost={host => this.onChange({ host })}
           onChangePort={port => this.onChange({ port })}
           onChangeTopic={topic => this.onChange({ topic })}
+          disableInputs={connectionStatus === connectionStatuses.CONNECTED}
         />
         <MQTTConfigurationButtons
           isFormFilled={isFilled}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import MqttItem from './Components/MqttItem';
-import ConnectionFAB from './Components/ConnectionFAB';
 import { connectionStatuses } from './statuses';
 import MQTTComponent from './Headless/MQTTComponent';
 import MQTTConfigurationForm from './Groups/MQTTConfigurationForm';
@@ -31,7 +30,7 @@ export default class App extends Component {
     this.setState({ text: [...text, entry] });
   };
 
-  onClickFAB = () => {
+  onClickConnectionButton = () => {
     const { connectionStatus } = this.state;
     if(connectionStatus === connectionStatuses.CONNECTED) this.setStatus(connectionStatuses.DISCONNECTED);
     else this.setStatus(connectionStatuses.CONNECTED)
@@ -76,18 +75,17 @@ export default class App extends Component {
           onChangePort={port => this.onChange({ port })}
           onChangeTopic={topic => this.onChange({ topic })}
         />
-        <MQTTConfigurationButtons />
+        <MQTTConfigurationButtons
+          isFormFilled={isFilled}
+          onPressConnectionButton={this.onClickConnectionButton}
+          connectionStatus={connectionStatus}
+        />
         <FlatList
           data={text}
           ItemSeparatorComponent={() => <Divider />}
           keyExtractor={(item, index) => `item${index}`}
           renderItem={({ item }) => <MqttItem text={item} />}
           style={styles.container}
-        />
-        <ConnectionFAB
-          disabled={!isFilled}
-          status={connectionStatus}
-          onClick={this.onClickFAB}
         />
         { connectionStatus === connectionStatuses.CONNECTED && 
         <MQTTComponent 

@@ -30,7 +30,7 @@ class MQTTComponent extends PureComponent {
   }
 
   componentWillUnmount() {
-    this.client.disconnect()
+    this.client && this.client.disconnect();
   }
 
   subscribe() {

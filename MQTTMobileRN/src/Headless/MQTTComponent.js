@@ -38,6 +38,11 @@ class MQTTComponent extends PureComponent {
     this.client.subscribe(topic, { onSuccess: this.props.onSubscribe });
   }
 
+  unsubscribe() {
+    const { topic } = this.props;
+    this.client.unsubscribe(topic, { onSuccess: this.props.onUnsubscribe });
+  }
+
   render() {
     return null;
   }

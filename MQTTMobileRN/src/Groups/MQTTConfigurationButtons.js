@@ -9,13 +9,12 @@ const MQTTConfigurationButtons = props => {
     isFormFilled,
     onPressConnectionButton,
   } = props;
-  const connectionButtonText = connectionStatus === connectionStatuses.CONNECTED 
-    ? 'Disconnect'
-    : 'Connect';
+  const isConnected = connectionStatus === connectionStatuses.CONNECTED;
+  const connectionButtonText =  isConnected ? 'Disconnect' : 'Connect';
   return (
     <View style={styles.container}>
       <CustomButton text={connectionButtonText} disabled={!isFormFilled} onPress={onPressConnectionButton} />
-      <CustomButton text='Subscribe' />
+      <CustomButton text='Subscribe' disabled={!isConnected || !isFormFilled} />
     </View>
   );
 };

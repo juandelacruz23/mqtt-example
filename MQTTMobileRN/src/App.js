@@ -17,7 +17,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: ['...'],
+      text: [],
       connectionStatus: connectionStatuses.DISCONNECTED,
       subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED,
       host: '',

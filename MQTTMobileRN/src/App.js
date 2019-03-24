@@ -106,7 +106,9 @@ export default class App extends Component {
           disableInputs={connectionStatus === connectionStatuses.CONNECTED}
         />
         <MQTTConfigurationButtons
+          hasText={text.length === 0}
           isFormFilled={isFilled}
+          onPressClearButton={() => this.setState({ text: [] })}
           onPressConnectionButton={this.onClickConnectionButton}
           onPressSubscribeButton={this.onPressSubscribeButton}
           connectionStatus={connectionStatus}

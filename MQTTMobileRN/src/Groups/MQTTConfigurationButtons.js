@@ -6,7 +6,9 @@ import { connectionStatuses, subscriptionStatuses } from '../statuses';
 const MQTTConfigurationButtons = props => {
   const { 
     connectionStatus,
+    hasText,
     isFormFilled,
+    onPressClearButton,
     onPressConnectionButton,
     onPressSubscribeButton,
     subscriptionStatus,
@@ -19,6 +21,7 @@ const MQTTConfigurationButtons = props => {
     <View style={styles.container}>
       <CustomButton text={connectionButtonText} disabled={!isFormFilled} onPress={onPressConnectionButton} />
       <CustomButton text={subscriptionButtonText} disabled={!isConnected || !isFormFilled} onPress={onPressSubscribeButton} />
+      <CustomButton text="Clear" disabled={hasText} onPress={onPressClearButton} />
     </View>
   );
 };

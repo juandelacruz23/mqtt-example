@@ -60,10 +60,6 @@ class App extends Component {
     }
   };
 
-  onMessageArrived = message => {
-    this.pushText(`new message: ${message.payloadString}`);
-  };
-
   onChange = value => this.setState(value);
 
   onPressSubscribeButton = () => {
@@ -104,7 +100,6 @@ class App extends Component {
         <MQTTComponent
           onConnect={this.onConnect}
           onConnectionLost={this.onConnectionLost}
-          onMessageArrived={this.onMessageArrived}
           onSubscribe={this.onSubscribe}
           onUnsubscribe={this.onUnsubscribe}
           ref={this.mqttComponent}

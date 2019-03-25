@@ -18,6 +18,18 @@ Object {
 }
 `;
 
+exports[`change value and push text action should return CHANGE_AND_PUSH with payload 1`] = `
+Object {
+  "payload": Object {
+    "text": "fake text",
+    "value": Object {
+      "connectionStatus": 1,
+    },
+  },
+  "type": "CHANGE_AND_PUSH",
+}
+`;
+
 exports[`push text action should return PUSH_TEXT with payload 1`] = `
 Object {
   "payload": "fake text",

@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   connectionStatus: state.connectionStatus,
+  hasText: state.text.length === 0,
   isFormFilled: !!(state.host && state.port && state.topic),
   subscriptionStatus: state.subscriptionStatus,
 });

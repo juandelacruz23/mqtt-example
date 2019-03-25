@@ -67,7 +67,6 @@ class App extends Component {
       <View style={styles.container}>
         <MQTTConfigurationForm />
         <MQTTConfigurationButtons
-          hasText={text.length === 0}
           onPressConnectionButton={this.onClickConnectionButton}
           onPressSubscribeButton={this.onPressSubscribeButton}
         />

@@ -17,3 +17,10 @@ Object {
   "type": "CHANGE_VALUE",
 }
 `;
+
+exports[`push text action should return PUSH_TEXT with payload 1`] = `
+Object {
+  "payload": "fake text",
+  "type": "PUSH_TEXT",
+}
+`;

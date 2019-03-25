@@ -3,7 +3,8 @@ import { AsyncStorage } from "react-native";
 import init from "react_native_mqtt";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { pushText } from "./../redux/mainDuck";
+import { pushText, changeAndPush } from "./../redux/mainDuck";
+import { connectionStatuses } from "../statuses";
 
 init({
   size: 10000,
@@ -65,6 +66,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
+  onConnect: () =>
+    changeAndPush(
+      { connectionStatus: connectionStatuses.CONNECTED },
+      "Connected"
+    ),
   onMessageArrived: message =>
     pushText(`new message: ${message.payloadString}`),
 };

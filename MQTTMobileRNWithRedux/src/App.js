@@ -49,11 +49,6 @@ class App extends Component {
     callback && callback();
   };
 
-  onConnect = () =>
-    this.setConnectionStatus(connectionStatuses.CONNECTED, () =>
-      this.pushText("Connected")
-    );
-
   onConnectionLost = responseObject => {
     if (responseObject.errorCode !== 0) {
       this.pushText(`connection lost: ${responseObject.errorMessage}`);
@@ -98,7 +93,6 @@ class App extends Component {
           style={styles.container}
         />
         <MQTTComponent
-          onConnect={this.onConnect}
           onConnectionLost={this.onConnectionLost}
           onSubscribe={this.onSubscribe}
           onUnsubscribe={this.onUnsubscribe}

@@ -44,8 +44,10 @@ class App extends Component {
     callback();
   };
 
-  setSubscriptionStatus = (subscriptionStatus, callback) =>
-    this.setState({ subscriptionStatus }, callback);
+  setSubscriptionStatus = (subscriptionStatus, callback) => {
+    this.props.setSubscriptionStatus(subscriptionStatus);
+    callback && callback();
+  };
 
   onConnect = () =>
     this.setConnectionStatus(connectionStatuses.CONNECTED, () =>
@@ -65,7 +67,7 @@ class App extends Component {
   onChange = value => this.setState(value);
 
   onPressSubscribeButton = () => {
-    const { subscriptionStatus } = this.state;
+    const { subscriptionStatus } = this.props;
     const { current: mqttComponent } = this.mqttComponent;
     if (subscriptionStatus === subscriptionStatuses.SUBSCRIBED)
       mqttComponent.unsubscribe();
@@ -83,7 +85,6 @@ class App extends Component {
     );
 
   render() {
-    const { subscriptionStatus } = this.state;
     const { text } = this.props;
     return (
       <View style={styles.container}>
@@ -92,7 +93,6 @@ class App extends Component {
           hasText={text.length === 0}
           onPressConnectionButton={this.onClickConnectionButton}
           onPressSubscribeButton={this.onPressSubscribeButton}
-          subscriptionStatus={subscriptionStatus}
         />
         <FlatList
           data={text}
@@ -116,13 +116,16 @@ class App extends Component {
 
 App.propTypes = {
   connectionStatus: PropTypes.number.isRequired,
-  text: PropTypes.array.isRequired,
   pushText: PropTypes.func.isRequired,
+  subscriptionStatus: PropTypes.number.isRequired,
+  text: PropTypes.array.isRequired,
   setConnectionStatus: PropTypes.func.isRequired,
+  setSubscriptionStatus: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ connectionStatus, text }) => ({
+const mapStateToProps = ({ connectionStatus, subscriptionStatus, text }) => ({
   connectionStatus,
+  subscriptionStatus,
   text,
 });
 
@@ -130,6 +133,8 @@ const mapDispatchToProps = {
   pushText,
   setConnectionStatus: newStatus =>
     changeValue({ connectionStatus: newStatus }),
+  setSubscriptionStatus: newStatus =>
+    changeValue({ subscriptionStatus: newStatus }),
 };
 
 export default connect(

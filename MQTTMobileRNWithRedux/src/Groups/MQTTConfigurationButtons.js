@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   connectionStatus: state.connectionStatus,
   isFormFilled: !!(state.host && state.port && state.topic),
+  subscriptionStatus: state.subscriptionStatus,
 });
 
 const mapDispatchToProps = {

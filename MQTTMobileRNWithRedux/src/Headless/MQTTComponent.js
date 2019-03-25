@@ -83,6 +83,11 @@ const mapDispatchToProps = {
     ),
   onMessageArrived: message =>
     pushText(`new message: ${message.payloadString}`),
+  onSubscribe: () =>
+    changeAndPush(
+      { subscriptionStatus: subscriptionStatuses.SUBSCRIBED },
+      "Subscribed"
+    ),
 };
 
 export default connect(

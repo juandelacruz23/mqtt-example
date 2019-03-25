@@ -61,11 +61,6 @@ class App extends Component {
     else mqttComponent.subscribe();
   };
 
-  onSubscribe = () =>
-    this.setSubscriptionStatus(subscriptionStatuses.SUBSCRIBED, () =>
-      this.pushText("Subscribed")
-    );
-
   onUnsubscribe = () =>
     this.setSubscriptionStatus(subscriptionStatuses.UNSUBSCRIBED, () =>
       this.pushText("Unsubscribed")
@@ -90,7 +85,6 @@ class App extends Component {
         />
         <MQTTComponent
           onConnectionLost={this.onConnectionLost}
-          onSubscribe={this.onSubscribe}
           onUnsubscribe={this.onUnsubscribe}
           ref={this.mqttComponent}
         />

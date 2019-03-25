@@ -8,7 +8,7 @@ import { connectionStatuses, subscriptionStatuses } from "./statuses";
 import MQTTComponent from "./Headless/MQTTComponent";
 import MQTTConfigurationForm from "./Groups/MQTTConfigurationForm";
 import MQTTConfigurationButtons from "./Groups/MQTTConfigurationButtons";
-import { pushText, changeValue } from "./redux/mainDuck";
+import { pushText } from "./redux/mainDuck";
 
 const styles = StyleSheet.create({
   container: {
@@ -19,13 +19,8 @@ const styles = StyleSheet.create({
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED,
-    };
     this.mqttComponent = React.createRef();
   }
-
-  pushText = entry => this.props.pushText(entry);
 
   onClickConnectionButton = () => {
     const { connectionStatus } = this.props;
@@ -35,23 +30,11 @@ class App extends Component {
     else mqttComponent.connect();
   };
 
-  setConnectionStatus = (connectionStatus, callback) => {
-    this.props.setConnectionStatus(connectionStatus);
-    callback();
-  };
-
-  setSubscriptionStatus = (subscriptionStatus, callback) => {
-    this.props.setSubscriptionStatus(subscriptionStatus);
-    callback && callback();
-  };
-
   onConnectionLost = responseObject => {
     if (responseObject.errorCode !== 0) {
-      this.pushText(`connection lost: ${responseObject.errorMessage}`);
+      this.props.pushText(`connection lost: ${responseObject.errorMessage}`);
     }
   };
-
-  onChange = value => this.setState(value);
 
   onPressSubscribeButton = () => {
     const { subscriptionStatus } = this.props;
@@ -91,8 +74,6 @@ App.propTypes = {
   pushText: PropTypes.func.isRequired,
   subscriptionStatus: PropTypes.number.isRequired,
   text: PropTypes.array.isRequired,
-  setConnectionStatus: PropTypes.func.isRequired,
-  setSubscriptionStatus: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ connectionStatus, subscriptionStatus, text }) => ({
@@ -103,10 +84,6 @@ const mapStateToProps = ({ connectionStatus, subscriptionStatus, text }) => ({
 
 const mapDispatchToProps = {
   pushText,
-  setConnectionStatus: newStatus =>
-    changeValue({ connectionStatus: newStatus }),
-  setSubscriptionStatus: newStatus =>
-    changeValue({ subscriptionStatus: newStatus }),
 };
 
 export default connect(

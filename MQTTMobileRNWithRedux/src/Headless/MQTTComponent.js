@@ -88,6 +88,11 @@ const mapDispatchToProps = {
       { subscriptionStatus: subscriptionStatuses.SUBSCRIBED },
       "Subscribed"
     ),
+  onUnsubscribe: () =>
+    changeAndPush(
+      { subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED },
+      "Unsubscribed"
+    ),
 };
 
 export default connect(

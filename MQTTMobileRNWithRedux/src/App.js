@@ -30,13 +30,9 @@ class App extends Component {
   onClickConnectionButton = () => {
     const { connectionStatus } = this.props;
     const { current: mqttComponent } = this.mqttComponent;
-    if (connectionStatus === connectionStatuses.CONNECTED) {
+    if (connectionStatus === connectionStatuses.CONNECTED)
       mqttComponent.disconnect();
-      this.setConnectionStatus(connectionStatuses.DISCONNECTED, () =>
-        this.pushText("Disconnected")
-      );
-      this.setSubscriptionStatus(subscriptionStatuses.UNSUBSCRIBED);
-    } else mqttComponent.connect();
+    else mqttComponent.connect();
   };
 
   setConnectionStatus = (connectionStatus, callback) => {

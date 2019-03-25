@@ -21,6 +21,11 @@ const initialState = {
   topic: "",
 };
 
-export function reducer(state = initialState) {
-  return state;
+export function reducer(state = initialState, action = {}) {
+  switch (action.type) {
+    case CHANGE_VALUE:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
 }

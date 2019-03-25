@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { Divider } from 'react-native-paper';
-import MqttItem from './Components/MqttItem';
-import { connectionStatuses, subscriptionStatuses } from './statuses';
-import MQTTComponent from './Headless/MQTTComponent';
-import MQTTConfigurationForm from './Groups/MQTTConfigurationForm';
-import MQTTConfigurationButtons from './Groups/MQTTConfigurationButtons';
+import React, { Component } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { Divider } from "react-native-paper";
+import MqttItem from "./Components/MqttItem";
+import { connectionStatuses, subscriptionStatuses } from "./statuses";
+import MQTTComponent from "./Headless/MQTTComponent";
+import MQTTConfigurationForm from "./Groups/MQTTConfigurationForm";
+import MQTTConfigurationButtons from "./Groups/MQTTConfigurationButtons";
 
 const styles = StyleSheet.create({
   container: {
@@ -20,9 +20,9 @@ export default class App extends Component {
       text: [],
       connectionStatus: connectionStatuses.DISCONNECTED,
       subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED,
-      host: '',
-      port: '',
-      topic: '',
+      host: "",
+      port: "",
+      topic: "",
     };
     this.mqttComponent = React.createRef();
   }
@@ -34,23 +34,25 @@ export default class App extends Component {
 
   onClickConnectionButton = () => {
     const { connectionStatus } = this.state;
-    const { current : mqttComponent } = this.mqttComponent;
-    if(connectionStatus === connectionStatuses.CONNECTED) {
+    const { current: mqttComponent } = this.mqttComponent;
+    if (connectionStatus === connectionStatuses.CONNECTED) {
       mqttComponent.disconnect();
-      this.setConnectionStatus(connectionStatuses.DISCONNECTED, () => this.pushText('Disconnected'));
+      this.setConnectionStatus(connectionStatuses.DISCONNECTED, () =>
+        this.pushText("Disconnected")
+      );
       this.setSubscriptionStatus(subscriptionStatuses.UNSUBSCRIBED);
-    }
-    else mqttComponent.connect();
+    } else mqttComponent.connect();
   };
 
-  setConnectionStatus = (connectionStatus, callback) => this.setState({ connectionStatus }, callback);
+  setConnectionStatus = (connectionStatus, callback) =>
+    this.setState({ connectionStatus }, callback);
 
-  setSubscriptionStatus = (subscriptionStatus, callback) => this.setState({ subscriptionStatus }, callback);
+  setSubscriptionStatus = (subscriptionStatus, callback) =>
+    this.setState({ subscriptionStatus }, callback);
 
-  onConnect = () => 
-    this.setConnectionStatus(
-      connectionStatuses.CONNECTED,
-      () => this.pushText('Connected')
+  onConnect = () =>
+    this.setConnectionStatus(connectionStatuses.CONNECTED, () =>
+      this.pushText("Connected")
     );
 
   onConnectionLost = responseObject => {
@@ -67,25 +69,24 @@ export default class App extends Component {
 
   onPressSubscribeButton = () => {
     const { subscriptionStatus } = this.state;
-    const { current : mqttComponent } = this.mqttComponent;
-    if(subscriptionStatus === subscriptionStatuses.SUBSCRIBED) mqttComponent.unsubscribe();
+    const { current: mqttComponent } = this.mqttComponent;
+    if (subscriptionStatus === subscriptionStatuses.SUBSCRIBED)
+      mqttComponent.unsubscribe();
     else mqttComponent.subscribe();
   };
 
-  onSubscribe = () => 
-    this.setSubscriptionStatus(
-      subscriptionStatuses.SUBSCRIBED,
-      () => this.pushText('Subscribed')
+  onSubscribe = () =>
+    this.setSubscriptionStatus(subscriptionStatuses.SUBSCRIBED, () =>
+      this.pushText("Subscribed")
     );
 
-  onUnsubscribe = () => 
-    this.setSubscriptionStatus(
-      subscriptionStatuses.UNSUBSCRIBED,
-      () => this.pushText('Unsubscribed')
+  onUnsubscribe = () =>
+    this.setSubscriptionStatus(subscriptionStatuses.UNSUBSCRIBED, () =>
+      this.pushText("Unsubscribed")
     );
 
   render() {
-    const { 
+    const {
       connectionStatus,
       subscriptionStatus,
       text,
@@ -107,7 +108,7 @@ export default class App extends Component {
         />
         <MQTTConfigurationButtons
           hasText={text.length === 0}
-          isFormFilled={isFilled}
+          isFormFilled={!!isFilled}
           onPressClearButton={() => this.setState({ text: [] })}
           onPressConnectionButton={this.onClickConnectionButton}
           onPressSubscribeButton={this.onPressSubscribeButton}
@@ -121,7 +122,7 @@ export default class App extends Component {
           renderItem={({ item }) => <MqttItem text={item} />}
           style={styles.container}
         />
-        <MQTTComponent 
+        <MQTTComponent
           onConnect={this.onConnect}
           onConnectionLost={this.onConnectionLost}
           onMessageArrived={this.onMessageArrived}

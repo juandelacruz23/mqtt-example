@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "MQTTMobileRN-tvOS.app"
-               BlueprintName = "MQTTMobileRN-tvOS"
-               ReferencedContainer = "container:MQTTMobileRN.xcodeproj">
+               BuildableName = "MQTTMobileRNwRedux-tvOS.app"
+               BlueprintName = "MQTTMobileRNwRedux-tvOS"
+               ReferencedContainer = "container:MQTTMobileRNwRedux.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "MQTTMobileRN-tvOSTests.xctest"
-               BlueprintName = "MQTTMobileRN-tvOSTests"
-               ReferencedContainer = "container:MQTTMobileRN.xcodeproj">
+               BuildableName = "MQTTMobileRNwRedux-tvOSTests.xctest"
+               BlueprintName = "MQTTMobileRNwRedux-tvOSTests"
+               ReferencedContainer = "container:MQTTMobileRNwRedux.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "MQTTMobileRN-tvOSTests.xctest"
-               BlueprintName = "MQTTMobileRN-tvOSTests"
-               ReferencedContainer = "container:MQTTMobileRN.xcodeproj">
+               BuildableName = "MQTTMobileRNwRedux-tvOSTests.xctest"
+               BlueprintName = "MQTTMobileRNwRedux-tvOSTests"
+               ReferencedContainer = "container:MQTTMobileRNwRedux.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "MQTTMobileRN-tvOS.app"
-            BlueprintName = "MQTTMobileRN-tvOS"
-            ReferencedContainer = "container:MQTTMobileRN.xcodeproj">
+            BuildableName = "MQTTMobileRNwRedux-tvOS.app"
+            BlueprintName = "MQTTMobileRNwRedux-tvOS"
+            ReferencedContainer = "container:MQTTMobileRNwRedux.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "MQTTMobileRN-tvOS.app"
-            BlueprintName = "MQTTMobileRN-tvOS"
-            ReferencedContainer = "container:MQTTMobileRN.xcodeproj">
+            BuildableName = "MQTTMobileRNwRedux-tvOS.app"
+            BlueprintName = "MQTTMobileRNwRedux-tvOS"
+            ReferencedContainer = "container:MQTTMobileRNwRedux.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "MQTTMobileRN-tvOS.app"
-            BlueprintName = "MQTTMobileRN-tvOS"
-            ReferencedContainer = "container:MQTTMobileRN.xcodeproj">
+            BuildableName = "MQTTMobileRNwRedux-tvOS.app"
+            BlueprintName = "MQTTMobileRNwRedux-tvOS"
+            ReferencedContainer = "container:MQTTMobileRNwRedux.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

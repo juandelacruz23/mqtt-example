@@ -1,4 +1,4 @@
-package com.mqttmobilern;
+package com.mqttmobilernwredux;
 
 import android.app.Application;
 

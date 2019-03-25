@@ -102,7 +102,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mqttmobilern"
+        applicationId "com.mqttmobilernwredux"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

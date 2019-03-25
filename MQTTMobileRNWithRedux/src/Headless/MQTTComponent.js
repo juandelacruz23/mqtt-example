@@ -1,6 +1,7 @@
-import { PureComponent } from 'react';
+import { PureComponent } from "react";
 import { AsyncStorage } from "react-native";
-import init from 'react_native_mqtt';
+import init from "react_native_mqtt";
+import PropTypes from "prop-types";
 
 init({
   size: 10000,
@@ -12,16 +13,12 @@ init({
 
 class MQTTComponent extends PureComponent {
   connect() {
-    const { 
-      onConnectionLost,
-      onMessageArrived,
-      host,
-      port,
-    } = this.props;
-    this.client = new Paho.MQTT.Client(host, Number(port), 'uname');
+    const { onConnectionLost, onMessageArrived, host, port } = this.props;
+    // eslint-disable-next-line no-undef
+    this.client = new Paho.MQTT.Client(host, Number(port), "uname");
     this.client.onConnectionLost = onConnectionLost;
     this.client.onMessageArrived = onMessageArrived;
-    this.client.connect({ onSuccess: this.props.onConnect, useSSL: false })    
+    this.client.connect({ onSuccess: this.props.onConnect, useSSL: false });
   }
 
   disconnect() {
@@ -47,5 +44,16 @@ class MQTTComponent extends PureComponent {
     return null;
   }
 }
+
+MQTTComponent.propTypes = {
+  onConnect: PropTypes.func.isRequired,
+  onConnectionLost: PropTypes.func.isRequired,
+  onMessageArrived: PropTypes.func.isRequired,
+  onSubscribe: PropTypes.func.isRequired,
+  onUnsubscribe: PropTypes.func.isRequired,
+  host: PropTypes.string.isRequired,
+  port: PropTypes.string.isRequired,
+  topic: PropTypes.string.isRequired,
+};
 
 export default MQTTComponent;

@@ -4,6 +4,7 @@ import { TextInput } from "react-native-paper";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { changeValue } from "./../redux/mainDuck";
+import { connectionStatuses } from "../statuses";
 
 const MQTTConfigurationForm = props => (
   <View>
@@ -56,10 +57,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ host, port, topic }) => ({
+const mapStateToProps = ({ host, port, topic, connectionStatus }) => ({
   host,
   port,
   topic,
+  disableInputs: connectionStatus === connectionStatuses.CONNECTED,
 });
 
 const mapDispatchToProps = {

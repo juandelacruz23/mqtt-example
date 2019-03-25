@@ -8,7 +8,7 @@ import { connectionStatuses, subscriptionStatuses } from "./statuses";
 import MQTTComponent from "./Headless/MQTTComponent";
 import MQTTConfigurationForm from "./Groups/MQTTConfigurationForm";
 import MQTTConfigurationButtons from "./Groups/MQTTConfigurationButtons";
-import { pushText } from "./redux/mainDuck";
+import { pushText, changeValue } from "./redux/mainDuck";
 
 const styles = StyleSheet.create({
   container: {
@@ -20,7 +20,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      connectionStatus: connectionStatuses.DISCONNECTED,
       subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED,
     };
     this.mqttComponent = React.createRef();
@@ -29,7 +28,7 @@ class App extends Component {
   pushText = entry => this.props.pushText(entry);
 
   onClickConnectionButton = () => {
-    const { connectionStatus } = this.state;
+    const { connectionStatus } = this.props;
     const { current: mqttComponent } = this.mqttComponent;
     if (connectionStatus === connectionStatuses.CONNECTED) {
       mqttComponent.disconnect();
@@ -40,8 +39,10 @@ class App extends Component {
     } else mqttComponent.connect();
   };
 
-  setConnectionStatus = (connectionStatus, callback) =>
-    this.setState({ connectionStatus }, callback);
+  setConnectionStatus = (connectionStatus, callback) => {
+    this.props.setConnectionStatus(connectionStatus);
+    callback();
+  };
 
   setSubscriptionStatus = (subscriptionStatus, callback) =>
     this.setState({ subscriptionStatus }, callback);
@@ -82,18 +83,15 @@ class App extends Component {
     );
 
   render() {
-    const { connectionStatus, subscriptionStatus } = this.state;
+    const { subscriptionStatus } = this.state;
     const { text } = this.props;
     return (
       <View style={styles.container}>
-        <MQTTConfigurationForm
-          disableInputs={connectionStatus === connectionStatuses.CONNECTED}
-        />
+        <MQTTConfigurationForm />
         <MQTTConfigurationButtons
           hasText={text.length === 0}
           onPressConnectionButton={this.onClickConnectionButton}
           onPressSubscribeButton={this.onPressSubscribeButton}
-          connectionStatus={connectionStatus}
           subscriptionStatus={subscriptionStatus}
         />
         <FlatList
@@ -117,16 +115,21 @@ class App extends Component {
 }
 
 App.propTypes = {
+  connectionStatus: PropTypes.number.isRequired,
   text: PropTypes.array.isRequired,
   pushText: PropTypes.func.isRequired,
+  setConnectionStatus: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ text }) => ({
+const mapStateToProps = ({ connectionStatus, text }) => ({
+  connectionStatus,
   text,
 });
 
 const mapDispatchToProps = {
   pushText,
+  setConnectionStatus: newStatus =>
+    changeValue({ connectionStatus: newStatus }),
 };
 
 export default connect(

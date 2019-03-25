@@ -5,6 +5,13 @@
 
 import { connectionStatuses, subscriptionStatuses } from "../statuses";
 
+const CHANGE_VALUE = "CHANGE_VALUE";
+
+export const changeValue = newValue => ({
+  type: CHANGE_VALUE,
+  payload: newValue,
+});
+
 const initialState = {
   text: [],
   connectionStatus: connectionStatuses.DISCONNECTED,

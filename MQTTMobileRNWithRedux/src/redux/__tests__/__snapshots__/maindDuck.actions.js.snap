@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`change value action should return CHANGE_VALUE with payload 1`] = `
+Object {
+  "payload": Object {
+    "example": "value",
+  },
+  "type": "CHANGE_VALUE",
+}
+`;
+
+exports[`change value action should return CHANGE_VALUE with payload 2`] = `
+Object {
+  "payload": Object {
+    "second": "example",
+  },
+  "type": "CHANGE_VALUE",
+}
+`;

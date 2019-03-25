@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Divider } from "react-native-paper";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import MqttItem from "./Components/MqttItem";
 import { connectionStatuses, subscriptionStatuses } from "./statuses";
 import MQTTComponent from "./Headless/MQTTComponent";
 import MQTTConfigurationForm from "./Groups/MQTTConfigurationForm";
 import MQTTConfigurationButtons from "./Groups/MQTTConfigurationButtons";
+import { pushText } from "./redux/mainDuck";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,21 +16,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: [],
       connectionStatus: connectionStatuses.DISCONNECTED,
       subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED,
     };
     this.mqttComponent = React.createRef();
   }
 
-  pushText = entry => {
-    const { text } = this.state;
-    this.setState({ text: [...text, entry] });
-  };
+  pushText = entry => this.props.pushText(entry);
 
   onClickConnectionButton = () => {
     const { connectionStatus } = this.state;
@@ -83,7 +82,8 @@ export default class App extends Component {
     );
 
   render() {
-    const { connectionStatus, subscriptionStatus, text } = this.state;
+    const { connectionStatus, subscriptionStatus } = this.state;
+    const { text } = this.props;
     return (
       <View style={styles.container}>
         <MQTTConfigurationForm
@@ -91,7 +91,6 @@ export default class App extends Component {
         />
         <MQTTConfigurationButtons
           hasText={text.length === 0}
-          onPressClearButton={() => this.setState({ text: [] })}
           onPressConnectionButton={this.onClickConnectionButton}
           onPressSubscribeButton={this.onPressSubscribeButton}
           connectionStatus={connectionStatus}
@@ -116,3 +115,21 @@ export default class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  text: PropTypes.array.isRequired,
+  pushText: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = ({ text }) => ({
+  text,
+});
+
+const mapDispatchToProps = {
+  pushText,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

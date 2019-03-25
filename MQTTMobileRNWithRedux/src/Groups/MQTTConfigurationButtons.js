@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import CustomButton from "../Components/CustomButton";
 import { connectionStatuses, subscriptionStatuses } from "../statuses";
 import { connect } from "react-redux";
+import { changeValue } from "../redux/mainDuck";
 
 const MQTTConfigurationButtons = props => {
   const {
@@ -62,4 +63,11 @@ const mapStateToProps = state => ({
   isFormFilled: !!(state.host && state.port && state.topic),
 });
 
-export default connect(mapStateToProps)(MQTTConfigurationButtons);
+const mapDispatchToProps = {
+  onPressClearButton: () => changeValue({ text: [] }),
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MQTTConfigurationButtons);

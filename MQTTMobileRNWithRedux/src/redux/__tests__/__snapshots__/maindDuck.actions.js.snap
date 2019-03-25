@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`change value action should return CHANGE_VALUE with payload 1`] = `
+Object {
+  "payload": Object {
+    "example": "value",
+  },
+  "type": "CHANGE_VALUE",
+}
+`;
+
+exports[`change value action should return CHANGE_VALUE with payload 2`] = `
+Object {
+  "payload": Object {
+    "second": "example",
+  },
+  "type": "CHANGE_VALUE",
+}
+`;
+
+exports[`change value and push text action should return CHANGE_AND_PUSH with payload 1`] = `
+Object {
+  "payload": Object {
+    "text": "fake text",
+    "value": Object {
+      "connectionStatus": 1,
+    },
+  },
+  "type": "CHANGE_AND_PUSH",
+}
+`;
+
+exports[`push text action should return PUSH_TEXT with payload 1`] = `
+Object {
+  "payload": "fake text",
+  "type": "PUSH_TEXT",
+}
+`;

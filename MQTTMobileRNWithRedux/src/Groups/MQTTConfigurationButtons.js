@@ -3,6 +3,8 @@ import { StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
 import CustomButton from "../Components/CustomButton";
 import { connectionStatuses, subscriptionStatuses } from "../statuses";
+import { connect } from "react-redux";
+import { changeValue } from "../redux/mainDuck";
 
 const MQTTConfigurationButtons = props => {
   const {
@@ -57,4 +59,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MQTTConfigurationButtons;
+const mapStateToProps = state => ({
+  connectionStatus: state.connectionStatus,
+  hasText: state.text.length === 0,
+  isFormFilled: !!(state.host && state.port && state.topic),
+  subscriptionStatus: state.subscriptionStatus,
+});
+
+const mapDispatchToProps = {
+  onPressClearButton: () => changeValue({ text: [] }),
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MQTTConfigurationButtons);

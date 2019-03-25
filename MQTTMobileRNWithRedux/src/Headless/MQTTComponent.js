@@ -2,6 +2,9 @@ import { PureComponent } from "react";
 import { AsyncStorage } from "react-native";
 import init from "react_native_mqtt";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { pushText, changeAndPush } from "./../redux/mainDuck";
+import { connectionStatuses, subscriptionStatuses } from "../statuses";
 
 init({
   size: 10000,
@@ -24,6 +27,7 @@ class MQTTComponent extends PureComponent {
   disconnect() {
     this.client.disconnect();
     this.client = null;
+    this.props.onDisconnect();
   }
 
   componentWillUnmount() {
@@ -47,6 +51,7 @@ class MQTTComponent extends PureComponent {
 
 MQTTComponent.propTypes = {
   onConnect: PropTypes.func.isRequired,
+  onDisconnect: PropTypes.func.isRequired,
   onConnectionLost: PropTypes.func.isRequired,
   onMessageArrived: PropTypes.func.isRequired,
   onSubscribe: PropTypes.func.isRequired,
@@ -56,4 +61,43 @@ MQTTComponent.propTypes = {
   topic: PropTypes.string.isRequired,
 };
 
-export default MQTTComponent;
+const mapStateToProps = state => ({
+  host: state.host,
+  port: state.port,
+  topic: state.topic,
+});
+
+const mapDispatchToProps = {
+  onConnect: () =>
+    changeAndPush(
+      { connectionStatus: connectionStatuses.CONNECTED },
+      "Connected"
+    ),
+  onDisconnect: () =>
+    changeAndPush(
+      {
+        connectionStatus: connectionStatuses.DISCONNECTED,
+        subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED,
+      },
+      "Disconnected"
+    ),
+  onMessageArrived: message =>
+    pushText(`new message: ${message.payloadString}`),
+  onSubscribe: () =>
+    changeAndPush(
+      { subscriptionStatus: subscriptionStatuses.SUBSCRIBED },
+      "Subscribed"
+    ),
+  onUnsubscribe: () =>
+    changeAndPush(
+      { subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED },
+      "Unsubscribed"
+    ),
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  { forwardRef: true }
+)(MQTTComponent);

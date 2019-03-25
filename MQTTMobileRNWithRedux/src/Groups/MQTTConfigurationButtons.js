@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
 import CustomButton from "../Components/CustomButton";
 import { connectionStatuses, subscriptionStatuses } from "../statuses";
+import { connect } from "react-redux";
 
 const MQTTConfigurationButtons = props => {
   const {
@@ -57,4 +58,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MQTTConfigurationButtons;
+const mapStateToProps = state => ({
+  isFormFilled: !!(state.host && state.port && state.topic),
+});
+
+export default connect(mapStateToProps)(MQTTConfigurationButtons);

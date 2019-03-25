@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { TextInput } from "react-native-paper";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { changeValue } from "./../redux/mainDuck";
 
 const MQTTConfigurationForm = props => (
   <View>
@@ -54,4 +56,19 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MQTTConfigurationForm;
+const mapStateToProps = ({ host, port, topic }) => ({
+  host,
+  port,
+  topic,
+});
+
+const mapDispatchToProps = {
+  onChangeHost: value => changeValue({ host: value }),
+  onChangePort: value => changeValue({ port: value }),
+  onChangeTopic: value => changeValue({ topic: value }),
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MQTTConfigurationForm);

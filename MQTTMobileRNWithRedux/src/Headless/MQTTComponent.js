@@ -2,6 +2,7 @@ import { PureComponent } from "react";
 import { AsyncStorage } from "react-native";
 import init from "react_native_mqtt";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 init({
   size: 10000,
@@ -56,4 +57,15 @@ MQTTComponent.propTypes = {
   topic: PropTypes.string.isRequired,
 };
 
-export default MQTTComponent;
+const mapStateToProps = state => ({
+  host: state.host,
+  port: state.port,
+  topic: state.topic,
+});
+
+export default connect(
+  mapStateToProps,
+  null,
+  null,
+  { forwardRef: true }
+)(MQTTComponent);

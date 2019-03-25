@@ -20,9 +20,6 @@ export default class App extends Component {
       text: [],
       connectionStatus: connectionStatuses.DISCONNECTED,
       subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED,
-      host: "",
-      port: "",
-      topic: "",
     };
     this.mqttComponent = React.createRef();
   }
@@ -86,29 +83,14 @@ export default class App extends Component {
     );
 
   render() {
-    const {
-      connectionStatus,
-      subscriptionStatus,
-      text,
-      host,
-      port,
-      topic,
-    } = this.state;
-    const isFilled = host && port && topic;
+    const { connectionStatus, subscriptionStatus, text } = this.state;
     return (
       <View style={styles.container}>
         <MQTTConfigurationForm
-          host={host}
-          port={port}
-          topic={topic}
-          onChangeHost={host => this.onChange({ host })}
-          onChangePort={port => this.onChange({ port })}
-          onChangeTopic={topic => this.onChange({ topic })}
           disableInputs={connectionStatus === connectionStatuses.CONNECTED}
         />
         <MQTTConfigurationButtons
           hasText={text.length === 0}
-          isFormFilled={!!isFilled}
           onPressClearButton={() => this.setState({ text: [] })}
           onPressConnectionButton={this.onClickConnectionButton}
           onPressSubscribeButton={this.onPressSubscribeButton}
@@ -128,9 +110,6 @@ export default class App extends Component {
           onMessageArrived={this.onMessageArrived}
           onSubscribe={this.onSubscribe}
           onUnsubscribe={this.onUnsubscribe}
-          host={host}
-          port={port}
-          topic={topic}
           ref={this.mqttComponent}
         />
       </View>

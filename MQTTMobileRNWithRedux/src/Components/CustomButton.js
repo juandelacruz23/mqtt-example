@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const CustomButton = ({ disabled, onPress, text }) => {
   return (
-    <Button mode="contained" disabled={disabled} onPress={onPress}>
+    <Button mode="contained" disabled={disabled} onPress={onPress} compact>
       {text}
     </Button>
   );

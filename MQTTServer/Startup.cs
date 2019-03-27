@@ -25,6 +25,7 @@ namespace MQTTServer
     {
       app.UseMqttEndpoint();
       // use a custom implementation of the mqtt server from a separate file (CustomMqttServerExtensions.cs)
+      // if you remove this line, you will have a normal mqtt server
       app.UseCustomMqttServer();
 
       if (env.IsDevelopment())

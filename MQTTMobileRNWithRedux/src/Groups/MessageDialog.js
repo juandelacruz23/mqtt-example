@@ -27,7 +27,13 @@ const MessageDialog = props => (
         />
       </Dialog.Content>
       <Dialog.Actions>
-        <Button icon="send" onPress={props.closeDialog}>
+        <Button
+          icon="send"
+          onPress={() => {
+            props.sendMessage();
+            props.closeDialog();
+          }}
+        >
           Send!
         </Button>
       </Dialog.Actions>
@@ -39,6 +45,7 @@ MessageDialog.propTypes = {
   closeDialog: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired,
   onChangeMessage: PropTypes.func.isRequired,
+  sendMessage: PropTypes.func.isRequired,
   showMessageDialog: PropTypes.bool.isRequired,
 };
 

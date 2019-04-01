@@ -34,6 +34,11 @@ class MQTTComponent extends PureComponent {
     this.client && this.client.disconnect();
   }
 
+  publish() {
+    const { message, topic } = this.props;
+    this.client.publish(topic, message);
+  }
+
   subscribe() {
     const { topic } = this.props;
     this.client.subscribe(topic, { onSuccess: this.props.onSubscribe });
@@ -57,12 +62,14 @@ MQTTComponent.propTypes = {
   onSubscribe: PropTypes.func.isRequired,
   onUnsubscribe: PropTypes.func.isRequired,
   host: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
   port: PropTypes.string.isRequired,
   topic: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   host: state.host,
+  message: state.message,
   port: state.port,
   topic: state.topic,
 });

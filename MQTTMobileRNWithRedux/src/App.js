@@ -46,6 +46,11 @@ class App extends Component {
     else mqttComponent.subscribe();
   };
 
+  sendMessage = () => {
+    const { current: mqttComponent } = this.mqttComponent;
+    mqttComponent.publish();
+  };
+
   render() {
     const { text } = this.props;
     return (
@@ -67,7 +72,7 @@ class App extends Component {
           ref={this.mqttComponent}
         />
         <MessageFAB />
-        <MessageDialog />
+        <MessageDialog sendMessage={this.sendMessage} />
       </View>
     );
   }

@@ -9,6 +9,7 @@ import MQTTComponent from "./Headless/MQTTComponent";
 import MQTTConfigurationForm from "./Groups/MQTTConfigurationForm";
 import MQTTConfigurationButtons from "./Groups/MQTTConfigurationButtons";
 import { pushText } from "./redux/mainDuck";
+import MessageFAB from "./Components/MessageFAB";
 
 const styles = StyleSheet.create({
   container: {
@@ -64,6 +65,7 @@ class App extends Component {
           onConnectionLost={this.onConnectionLost}
           ref={this.mqttComponent}
         />
+        <MessageFAB />
       </View>
     );
   }

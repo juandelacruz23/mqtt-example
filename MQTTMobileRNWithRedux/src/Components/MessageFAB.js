@@ -4,14 +4,16 @@ import { FAB } from "react-native-paper";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { connectionStatuses } from "../statuses";
+import { changeValue } from "../redux/mainDuck";
 
-const MessageFAB = ({ disabled }) => (
-  <FAB style={styles.fab} icon="message" disabled={disabled} />
+const MessageFAB = ({ disabled, onPress }) => (
+  <FAB
+    style={styles.fab}
+    icon="message"
+    disabled={disabled}
+    onPress={onPress}
+  />
 );
-
-MessageFAB.propTypes = {
-  disabled: PropTypes.bool.isRequired,
-};
 
 const styles = StyleSheet.create({
   fab: {
@@ -27,8 +29,20 @@ const styles = StyleSheet.create({
   },
 });
 
+MessageFAB.propTypes = {
+  disabled: PropTypes.bool.isRequired,
+  onPress: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = state => ({
   disabled: state.connectionStatus === connectionStatuses.DISCONNECTED,
 });
 
-export default connect(mapStateToProps)(MessageFAB);
+const mapDispatchToProps = {
+  onPress: () => changeValue({ showMessageDialog: true }),
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MessageFAB);

@@ -10,6 +10,7 @@ import MQTTConfigurationForm from "./Groups/MQTTConfigurationForm";
 import MQTTConfigurationButtons from "./Groups/MQTTConfigurationButtons";
 import { pushText } from "./redux/mainDuck";
 import MessageFAB from "./Components/MessageFAB";
+import MessageDialog from "./Groups/MessageDialog";
 
 const styles = StyleSheet.create({
   container: {
@@ -66,6 +67,7 @@ class App extends Component {
           ref={this.mqttComponent}
         />
         <MessageFAB />
+        <MessageDialog />
       </View>
     );
   }

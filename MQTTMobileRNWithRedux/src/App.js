@@ -9,6 +9,8 @@ import MQTTComponent from "./Headless/MQTTComponent";
 import MQTTConfigurationForm from "./Groups/MQTTConfigurationForm";
 import MQTTConfigurationButtons from "./Groups/MQTTConfigurationButtons";
 import { pushText } from "./redux/mainDuck";
+import MessageFAB from "./Components/MessageFAB";
+import MessageDialog from "./Groups/MessageDialog";
 
 const styles = StyleSheet.create({
   container: {
@@ -44,6 +46,11 @@ class App extends Component {
     else mqttComponent.subscribe();
   };
 
+  sendMessage = () => {
+    const { current: mqttComponent } = this.mqttComponent;
+    mqttComponent.publish();
+  };
+
   render() {
     const { text } = this.props;
     return (
@@ -64,6 +71,8 @@ class App extends Component {
           onConnectionLost={this.onConnectionLost}
           ref={this.mqttComponent}
         />
+        <MessageFAB />
+        <MessageDialog sendMessage={this.sendMessage} />
       </View>
     );
   }

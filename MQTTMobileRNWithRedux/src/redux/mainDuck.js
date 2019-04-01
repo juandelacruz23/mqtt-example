@@ -34,6 +34,8 @@ const initialState = {
   host: "",
   port: "",
   topic: "",
+  showMessageDialog: false,
+  message: "",
 };
 
 export function reducer(state = initialState, action = {}) {

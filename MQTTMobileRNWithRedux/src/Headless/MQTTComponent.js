@@ -1,24 +1,15 @@
 import { PureComponent } from "react";
-import { AsyncStorage } from "react-native";
-import init from "react_native_mqtt";
+import Paho from "paho-mqtt";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { pushText, changeAndPush } from "./../redux/mainDuck";
 import { connectionStatuses, subscriptionStatuses } from "../statuses";
 
-init({
-  size: 10000,
-  storageBackend: AsyncStorage,
-  defaultExpires: 1000 * 3600 * 24,
-  enableCache: true,
-  sync: {},
-});
-
 class MQTTComponent extends PureComponent {
   connect() {
     const { onConnectionLost, onMessageArrived, host, port } = this.props;
     // eslint-disable-next-line no-undef
-    this.client = new Paho.MQTT.Client(host, Number(port), "uname");
+    this.client = new Paho.Client(host, Number(port), "uname");
     this.client.onConnectionLost = onConnectionLost;
     this.client.onMessageArrived = onMessageArrived;
     this.client.connect({ onSuccess: this.props.onConnect, useSSL: false });

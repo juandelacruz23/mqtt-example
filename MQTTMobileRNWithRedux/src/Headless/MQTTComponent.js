@@ -13,13 +13,13 @@ class MQTTComponent extends PureComponent {
       onConnectionLost,
       onMessageArrived,
       port,
-      startConnecting,
+      startLoading,
     } = this.props;
     // eslint-disable-next-line no-undef
     this.client = new Paho.Client(host, Number(port), "uname");
     this.client.onConnectionLost = onConnectionLost;
     this.client.onMessageArrived = onMessageArrived;
-    startConnecting();
+    startLoading();
     this.client.connect({ onSuccess: onConnect, useSSL: false });
   }
 
@@ -39,13 +39,15 @@ class MQTTComponent extends PureComponent {
   }
 
   subscribe() {
-    const { topic } = this.props;
-    this.client.subscribe(topic, { onSuccess: this.props.onSubscribe });
+    const { onSubscribe, startLoading, topic } = this.props;
+    startLoading();
+    this.client.subscribe(topic, { onSuccess: onSubscribe });
   }
 
   unsubscribe() {
-    const { topic } = this.props;
-    this.client.unsubscribe(topic, { onSuccess: this.props.onUnsubscribe });
+    const { onUnsubscribe, startLoading, topic } = this.props;
+    startLoading();
+    this.client.unsubscribe(topic, { onSuccess: onUnsubscribe });
   }
 
   render() {
@@ -63,7 +65,7 @@ MQTTComponent.propTypes = {
   host: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   port: PropTypes.string.isRequired,
-  startConnecting: PropTypes.func.isRequired,
+  startLoading: PropTypes.func.isRequired,
   topic: PropTypes.string.isRequired,
 };
 
@@ -77,7 +79,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onConnect: () =>
     changeAndPush(
-      { connectionStatus: connectionStatuses.CONNECTED, connecting: false },
+      { connectionStatus: connectionStatuses.CONNECTED, loading: false },
       "Connected"
     ),
   onDisconnect: () =>
@@ -92,15 +94,15 @@ const mapDispatchToProps = {
     pushText(`new message: ${message.payloadString}`),
   onSubscribe: () =>
     changeAndPush(
-      { subscriptionStatus: subscriptionStatuses.SUBSCRIBED },
+      { subscriptionStatus: subscriptionStatuses.SUBSCRIBED, loading: false },
       "Subscribed"
     ),
   onUnsubscribe: () =>
     changeAndPush(
-      { subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED },
+      { subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED, loading: false },
       "Unsubscribed"
     ),
-  startConnecting: () => changeValue({ connecting: true }),
+  startLoading: () => changeValue({ loading: true }),
 };
 
 export default connect(

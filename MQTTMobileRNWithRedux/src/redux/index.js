@@ -11,7 +11,7 @@ const persistConfig = {
     "connectionStatus",
     "subscriptionStatus",
     "showMessageDialog",
-    "connecting",
+    "loading",
   ],
 };
 

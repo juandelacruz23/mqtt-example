@@ -36,6 +36,7 @@ const initialState = {
   topic: "",
   showMessageDialog: false,
   message: "",
+  connecting: false,
 };
 
 export function reducer(state = initialState, action = {}) {

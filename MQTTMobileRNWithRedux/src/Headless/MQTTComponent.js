@@ -2,17 +2,25 @@ import { PureComponent } from "react";
 import Paho from "paho-mqtt";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { pushText, changeAndPush } from "./../redux/mainDuck";
+import { pushText, changeAndPush, changeValue } from "./../redux/mainDuck";
 import { connectionStatuses, subscriptionStatuses } from "../statuses";
 
 class MQTTComponent extends PureComponent {
   connect() {
-    const { onConnectionLost, onMessageArrived, host, port } = this.props;
+    const {
+      host,
+      onConnect,
+      onConnectionLost,
+      onMessageArrived,
+      port,
+      startConnecting,
+    } = this.props;
     // eslint-disable-next-line no-undef
     this.client = new Paho.Client(host, Number(port), "uname");
     this.client.onConnectionLost = onConnectionLost;
     this.client.onMessageArrived = onMessageArrived;
-    this.client.connect({ onSuccess: this.props.onConnect, useSSL: false });
+    startConnecting();
+    this.client.connect({ onSuccess: onConnect, useSSL: false });
   }
 
   disconnect() {
@@ -55,6 +63,7 @@ MQTTComponent.propTypes = {
   host: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   port: PropTypes.string.isRequired,
+  startConnecting: PropTypes.func.isRequired,
   topic: PropTypes.string.isRequired,
 };
 
@@ -68,7 +77,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onConnect: () =>
     changeAndPush(
-      { connectionStatus: connectionStatuses.CONNECTED },
+      { connectionStatus: connectionStatuses.CONNECTED, connecting: false },
       "Connected"
     ),
   onDisconnect: () =>
@@ -91,6 +100,7 @@ const mapDispatchToProps = {
       { subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED },
       "Unsubscribed"
     ),
+  startConnecting: () => changeValue({ connecting: true }),
 };
 
 export default connect(

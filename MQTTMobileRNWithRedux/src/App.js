@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { Divider } from "react-native-paper";
+import { Divider, ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import MqttItem from "./Components/MqttItem";
@@ -52,7 +52,7 @@ class App extends Component {
   };
 
   render() {
-    const { text } = this.props;
+    const { loading, text } = this.props;
     return (
       <View style={styles.container}>
         <MQTTConfigurationForm />
@@ -60,13 +60,17 @@ class App extends Component {
           onPressConnectionButton={this.onClickConnectionButton}
           onPressSubscribeButton={this.onPressSubscribeButton}
         />
-        <FlatList
-          data={text}
-          ItemSeparatorComponent={() => <Divider />}
-          keyExtractor={(item, index) => `item${index}`}
-          renderItem={({ item }) => <MqttItem text={item} />}
-          style={styles.container}
-        />
+        {loading ? (
+          <ActivityIndicator animating size="large" />
+        ) : (
+          <FlatList
+            data={text}
+            ItemSeparatorComponent={() => <Divider />}
+            keyExtractor={(item, index) => `item${index}`}
+            renderItem={({ item }) => <MqttItem text={item} />}
+            style={styles.container}
+          />
+        )}
         <MQTTComponent
           onConnectionLost={this.onConnectionLost}
           ref={this.mqttComponent}
@@ -79,13 +83,20 @@ class App extends Component {
 }
 
 App.propTypes = {
+  loading: PropTypes.bool.isRequired,
   connectionStatus: PropTypes.number.isRequired,
   pushText: PropTypes.func.isRequired,
   subscriptionStatus: PropTypes.number.isRequired,
   text: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = ({ connectionStatus, subscriptionStatus, text }) => ({
+const mapStateToProps = ({
+  loading,
+  connectionStatus,
+  subscriptionStatus,
+  text,
+}) => ({
+  loading,
   connectionStatus,
   subscriptionStatus,
   text,

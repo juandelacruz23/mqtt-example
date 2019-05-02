@@ -7,7 +7,12 @@ import { reducer } from "./mainDuck";
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["connectionStatus", "subscriptionStatus", "showMessageDialog"],
+  blacklist: [
+    "connectionStatus",
+    "subscriptionStatus",
+    "showMessageDialog",
+    "loading",
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

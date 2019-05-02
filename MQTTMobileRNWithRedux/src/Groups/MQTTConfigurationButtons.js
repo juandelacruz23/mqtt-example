@@ -8,6 +8,7 @@ import { changeValue } from "../redux/mainDuck";
 
 const MQTTConfigurationButtons = props => {
   const {
+    loading,
     connectionStatus,
     hasText,
     isFormFilled,
@@ -20,21 +21,22 @@ const MQTTConfigurationButtons = props => {
   const isSubscribed = subscriptionStatus === subscriptionStatuses.SUBSCRIBED;
   const connectionButtonText = isConnected ? "Disconnect" : "Connect";
   const subscriptionButtonText = isSubscribed ? "Unsubscribe" : "Subscribe";
+  const disableAll = loading;
   return (
     <View style={styles.container}>
       <CustomButton
         text={connectionButtonText}
-        disabled={!isFormFilled}
+        disabled={!isFormFilled || disableAll}
         onPress={onPressConnectionButton}
       />
       <CustomButton
         text={subscriptionButtonText}
-        disabled={!isConnected || !isFormFilled}
+        disabled={!isConnected || !isFormFilled || disableAll}
         onPress={onPressSubscribeButton}
       />
       <CustomButton
         text="Clear"
-        disabled={hasText}
+        disabled={hasText || disableAll}
         onPress={onPressClearButton}
       />
     </View>
@@ -42,6 +44,7 @@ const MQTTConfigurationButtons = props => {
 };
 
 MQTTConfigurationButtons.propTypes = {
+  loading: PropTypes.bool.isRequired,
   connectionStatus: PropTypes.number.isRequired,
   hasText: PropTypes.bool.isRequired,
   isFormFilled: PropTypes.bool.isRequired,
@@ -60,6 +63,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
+  loading: state.loading,
   connectionStatus: state.connectionStatus,
   hasText: state.text.length === 0,
   isFormFilled: !!(state.host && state.port && state.topic),

@@ -4,7 +4,10 @@ exports[`main reducer should return initialState as default 1`] = `
 Object {
   "connectionStatus": 1,
   "host": "",
+  "loading": false,
+  "message": "",
   "port": "",
+  "showMessageDialog": false,
   "subscriptionStatus": 1,
   "text": Array [],
   "topic": "",

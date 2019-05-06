@@ -3,7 +3,7 @@ import { View, StyleProp, ViewStyle } from "react-native";
 import { TextInput } from "react-native-paper";
 import { connect } from "react-redux";
 import { changeValue, AppAction } from "./../redux/mainDuck";
-import { connectionStatuses } from "../statuses";
+import ConnectionStatus from "../ConnectionStatus";
 
 const MQTTConfigurationForm: React.FC<Props> = props => (
   <View>
@@ -58,7 +58,7 @@ const mapStateToProps = ({ host, port, topic, connectionStatus }) => ({
   host,
   port,
   topic,
-  disableInputs: connectionStatus === connectionStatuses.CONNECTED,
+  disableInputs: connectionStatus === ConnectionStatus.CONNECTED,
 });
 
 const mapDispatchToProps = {

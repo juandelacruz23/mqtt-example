@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleProp, ViewStyle } from "react-native";
 import { FAB } from "react-native-paper";
-import { connect, MapStateToProps } from "react-redux";
-import { connectionStatuses } from "../statuses";
+import { connect } from "react-redux";
 import { changeValue, AppState, AppAction } from "../redux/mainDuck";
+import ConnectionStatus from "../ConnectionStatus";
 
 interface IStateToProps {
   disabled: boolean,
@@ -32,7 +32,7 @@ const fab: StyleProp<ViewStyle> = {
 };
 
 const mapStateToProps = (state: AppState): IStateToProps => ({
-  disabled: state.connectionStatus === connectionStatuses.DISCONNECTED,
+  disabled: state.connectionStatus === ConnectionStatus.DISCONNECTED,
 });
 
 const mapDispatchToProps: IDispatchToProps = {

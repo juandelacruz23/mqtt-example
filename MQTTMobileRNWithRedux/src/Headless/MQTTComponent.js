@@ -3,7 +3,8 @@ import Paho from "paho-mqtt";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { pushText, changeAndPush, changeValue } from "./../redux/mainDuck";
-import { connectionStatuses, subscriptionStatuses } from "../statuses";
+import ConnectionStatus from "../ConnectionStatus";
+import SubscriptionStatus from "../SubscriptionStatus";
 
 class MQTTComponent extends PureComponent {
   connect() {
@@ -79,14 +80,14 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onConnect: () =>
     changeAndPush(
-      { connectionStatus: connectionStatuses.CONNECTED, loading: false },
+      { connectionStatus: ConnectionStatus.CONNECTED, loading: false },
       "Connected"
     ),
   onDisconnect: () =>
     changeAndPush(
       {
-        connectionStatus: connectionStatuses.DISCONNECTED,
-        subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED,
+        connectionStatus: ConnectionStatus.DISCONNECTED,
+        subscriptionStatus: SubscriptionStatus.UNSUBSCRIBED,
       },
       "Disconnected"
     ),
@@ -94,12 +95,12 @@ const mapDispatchToProps = {
     pushText(`new message: ${message.payloadString}`),
   onSubscribe: () =>
     changeAndPush(
-      { subscriptionStatus: subscriptionStatuses.SUBSCRIBED, loading: false },
+      { subscriptionStatus: SubscriptionStatus.SUBSCRIBED, loading: false },
       "Subscribed"
     ),
   onUnsubscribe: () =>
     changeAndPush(
-      { subscriptionStatus: subscriptionStatuses.UNSUBSCRIBED, loading: false },
+      { subscriptionStatus: SubscriptionStatus.UNSUBSCRIBED, loading: false },
       "Unsubscribed"
     ),
   startLoading: () => changeValue({ loading: true }),

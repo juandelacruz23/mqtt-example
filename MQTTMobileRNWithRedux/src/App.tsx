@@ -3,7 +3,6 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { Divider, ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
 import MqttItem from "./Components/MqttItem";
-import { connectionStatuses, subscriptionStatuses } from "./statuses";
 import MQTTComponent from "./Headless/MQTTComponent";
 import MQTTConfigurationForm from "./Groups/MQTTConfigurationForm";
 import MQTTConfigurationButtons from "./Groups/MQTTConfigurationButtons";
@@ -11,6 +10,7 @@ import { pushText } from "./redux/mainDuck";
 import MessageFAB from "./Components/MessageFAB";
 import MessageDialog from "./Groups/MessageDialog";
 import SubscriptionStatus from "./SubscriptionStatus";
+import ConnectionStatus from "./ConnectionStatus";
 
 const styles = StyleSheet.create({
   container: {
@@ -44,7 +44,7 @@ class App extends Component<Props> {
   onClickConnectionButton = () => {
     const { connectionStatus } = this.props;
     const { current: mqttComponent } = this.mqttComponent;
-    if (connectionStatus === connectionStatuses.CONNECTED)
+    if (connectionStatus === ConnectionStatus.CONNECTED)
       mqttComponent.disconnect();
     else mqttComponent.connect();
   };
@@ -58,7 +58,7 @@ class App extends Component<Props> {
   onPressSubscribeButton = () => {
     const { subscriptionStatus } = this.props;
     const { current: mqttComponent } = this.mqttComponent;
-    if (subscriptionStatus === subscriptionStatuses.SUBSCRIBED)
+    if (subscriptionStatus === SubscriptionStatus.SUBSCRIBED)
       mqttComponent.unsubscribe();
     else mqttComponent.subscribe();
   };

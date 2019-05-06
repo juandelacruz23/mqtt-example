@@ -6,11 +6,22 @@ import {
   Portal,
   TextInput,
 } from "react-native-paper";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { changeValue } from "../redux/mainDuck";
+import { changeValue, AppState, AppAction } from "../redux/mainDuck";
 
-const MessageDialog = props => (
+interface IStateToProps {
+  message: string,
+  showMessageDialog: boolean,
+}
+
+interface IDispatchToProps {
+  closeDialog: () => AppAction,
+  onChangeMessage: (message: string) => AppAction,
+}
+
+type Props = IStateToProps & IDispatchToProps & { sendMessage: () => void };
+
+const MessageDialog: React.FC<Props> = props => (
   <Portal>
     <Dialog visible={props.showMessageDialog} onDismiss={props.closeDialog}>
       <Dialog.Title>Create message</Dialog.Title>
@@ -41,20 +52,12 @@ const MessageDialog = props => (
   </Portal>
 );
 
-MessageDialog.propTypes = {
-  closeDialog: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired,
-  onChangeMessage: PropTypes.func.isRequired,
-  sendMessage: PropTypes.func.isRequired,
-  showMessageDialog: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = state => ({
-  showMessageDialog: state.showMessageDialog,
+const mapStateToProps = (state: AppState): IStateToProps => ({
   message: state.message,
+  showMessageDialog: state.showMessageDialog,
 });
 
-const mapDispatchToProps = {
+const mapDispatchToProps: IDispatchToProps = {
   closeDialog: () => changeValue({ showMessageDialog: false }),
   onChangeMessage: message => changeValue({ message }),
 };

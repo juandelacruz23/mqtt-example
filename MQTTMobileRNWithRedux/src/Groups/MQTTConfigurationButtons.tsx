@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import PropTypes from "prop-types";
 import CustomButton from "../Components/CustomButton";
-import { connectionStatuses, subscriptionStatuses } from "../statuses";
 import { connect } from "react-redux";
-import { changeValue } from "../redux/mainDuck";
+import { changeValue, AppAction, AppState } from "../redux/mainDuck";
+import ConnectionStatus from "../ConnectionStatus";
+import SubscriptionStatus from "../SubscriptionStatus";
 
-const MQTTConfigurationButtons = props => {
+const MQTTConfigurationButtons: React.FC<Props> = props => {
   const {
     loading,
     connectionStatus,
@@ -17,8 +17,8 @@ const MQTTConfigurationButtons = props => {
     onPressSubscribeButton,
     subscriptionStatus,
   } = props;
-  const isConnected = connectionStatus === connectionStatuses.CONNECTED;
-  const isSubscribed = subscriptionStatus === subscriptionStatuses.SUBSCRIBED;
+  const isConnected = connectionStatus === ConnectionStatus.CONNECTED;
+  const isSubscribed = subscriptionStatus === SubscriptionStatus.SUBSCRIBED;
   const connectionButtonText = isConnected ? "Disconnect" : "Connect";
   const subscriptionButtonText = isSubscribed ? "Unsubscribe" : "Subscribe";
   const disableAll = loading;
@@ -43,15 +43,15 @@ const MQTTConfigurationButtons = props => {
   );
 };
 
-MQTTConfigurationButtons.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  connectionStatus: PropTypes.number.isRequired,
-  hasText: PropTypes.bool.isRequired,
-  isFormFilled: PropTypes.bool.isRequired,
-  onPressClearButton: PropTypes.func.isRequired,
-  onPressConnectionButton: PropTypes.func.isRequired,
-  onPressSubscribeButton: PropTypes.func.isRequired,
-  subscriptionStatus: PropTypes.number.isRequired,
+interface Props {
+  loading: boolean,
+  connectionStatus: number,
+  hasText: boolean,
+  isFormFilled: boolean,
+  onPressClearButton: () => AppAction,
+  onPressConnectionButton: () => void,
+  onPressSubscribeButton: () => void,
+  subscriptionStatus: number,
 };
 
 const styles = StyleSheet.create({
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
   loading: state.loading,
   connectionStatus: state.connectionStatus,
   hasText: state.text.length === 0,

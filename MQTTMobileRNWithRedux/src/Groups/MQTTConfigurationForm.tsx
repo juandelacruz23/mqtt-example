@@ -1,19 +1,18 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { View, StyleProp, ViewStyle } from "react-native";
 import { TextInput } from "react-native-paper";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { changeValue } from "./../redux/mainDuck";
-import { connectionStatuses } from "../statuses";
+import { changeValue, AppAction } from "./../redux/mainDuck";
+import ConnectionStatus from "../ConnectionStatus";
 
-const MQTTConfigurationForm = props => (
+const MQTTConfigurationForm: React.FC<Props> = props => (
   <View>
-    <View style={styles.horizontalContainer}>
+    <View style={horizontalContainer}>
       <TextInput
         label="Host"
         value={props.host}
         onChangeText={props.onChangeHost}
-        style={[styles.input, { flex: 4 }]}
+        style={[input, { flex: 4 }]}
         keyboardType="numeric"
         disabled={props.disableInputs}
       />
@@ -21,7 +20,7 @@ const MQTTConfigurationForm = props => (
         label="Port"
         value={props.port}
         onChangeText={props.onChangePort}
-        style={[styles.input, { flex: 2 }]}
+        style={[input, { flex: 2 }]}
         keyboardType="numeric"
         disabled={props.disableInputs}
       />
@@ -31,37 +30,35 @@ const MQTTConfigurationForm = props => (
       label="Topic"
       value={props.topic}
       onChangeText={props.onChangeTopic}
-      style={styles.input}
+      style={input}
       disabled={props.disableInputs}
     />
   </View>
 );
 
-MQTTConfigurationForm.propTypes = {
-  disableInputs: PropTypes.bool.isRequired,
-  host: PropTypes.string.isRequired,
-  onChangeHost: PropTypes.func.isRequired,
-  onChangePort: PropTypes.func.isRequired,
-  onChangeTopic: PropTypes.func.isRequired,
-  port: PropTypes.string.isRequired,
-  topic: PropTypes.string.isRequired,
+interface Props {
+  disableInputs: boolean,
+  host: string,
+  onChangeHost: () => AppAction,
+  onChangePort: () => AppAction,
+  onChangeTopic: () => AppAction,
+  port: string,
+  topic: string,
 };
 
-const styles = StyleSheet.create({
-  input: {
-    marginHorizontal: 24,
-    marginTop: 24,
-  },
-  horizontalContainer: {
-    flexDirection: "row",
-  },
-});
+const input = {
+  marginHorizontal: 24,
+  marginTop: 24,
+};
+const horizontalContainer: StyleProp<ViewStyle> = {
+  flexDirection: "row",
+};
 
 const mapStateToProps = ({ host, port, topic, connectionStatus }) => ({
   host,
   port,
   topic,
-  disableInputs: connectionStatus === connectionStatuses.CONNECTED,
+  disableInputs: connectionStatus === ConnectionStatus.CONNECTED,
 });
 
 const mapDispatchToProps = {

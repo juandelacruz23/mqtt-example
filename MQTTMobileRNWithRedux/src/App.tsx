@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Divider, ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import MqttItem from "./Components/MqttItem";
-import { connectionStatuses, subscriptionStatuses } from "./statuses";
 import MQTTComponent from "./Headless/MQTTComponent";
 import MQTTConfigurationForm from "./Groups/MQTTConfigurationForm";
 import MQTTConfigurationButtons from "./Groups/MQTTConfigurationButtons";
 import { pushText } from "./redux/mainDuck";
 import MessageFAB from "./Components/MessageFAB";
 import MessageDialog from "./Groups/MessageDialog";
+import SubscriptionStatus from "./SubscriptionStatus";
+import ConnectionStatus from "./ConnectionStatus";
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,24 @@ const styles = StyleSheet.create({
   },
 });
 
-class App extends Component {
+interface Props {
+  loading: boolean,
+  connectionStatus: number,
+  pushText: (text: string) => void,
+  subscriptionStatus: SubscriptionStatus,
+  text: string[],
+};
+
+interface IMQTTComponent {
+  connect: () => void,
+  disconnect: () => void,
+  publish: () => void,
+  subscribe: () => void,
+  unsubscribe: () => void,
+}
+
+class App extends Component<Props> {
+  mqttComponent: React.RefObject<IMQTTComponent>;
   constructor(props) {
     super(props);
     this.mqttComponent = React.createRef();
@@ -27,7 +44,7 @@ class App extends Component {
   onClickConnectionButton = () => {
     const { connectionStatus } = this.props;
     const { current: mqttComponent } = this.mqttComponent;
-    if (connectionStatus === connectionStatuses.CONNECTED)
+    if (connectionStatus === ConnectionStatus.CONNECTED)
       mqttComponent.disconnect();
     else mqttComponent.connect();
   };
@@ -41,7 +58,7 @@ class App extends Component {
   onPressSubscribeButton = () => {
     const { subscriptionStatus } = this.props;
     const { current: mqttComponent } = this.mqttComponent;
-    if (subscriptionStatus === subscriptionStatuses.SUBSCRIBED)
+    if (subscriptionStatus === SubscriptionStatus.SUBSCRIBED)
       mqttComponent.unsubscribe();
     else mqttComponent.subscribe();
   };
@@ -81,14 +98,6 @@ class App extends Component {
     );
   }
 }
-
-App.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  connectionStatus: PropTypes.number.isRequired,
-  pushText: PropTypes.func.isRequired,
-  subscriptionStatus: PropTypes.number.isRequired,
-  text: PropTypes.array.isRequired,
-};
 
 const mapStateToProps = ({
   loading,

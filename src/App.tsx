@@ -1,7 +1,6 @@
 import React from 'react';
 import { Stack, Text, Link, FontWeights } from 'office-ui-fabric-react';
-
-import logo from './fabric.png';
+import logo from './mqtt-example.png';
 
 const boldStyle = {
   root: { fontWeight: FontWeights.semibold }

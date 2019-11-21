@@ -1,7 +1,11 @@
 import React from 'react';
-import { Stack, Text, Link, FontWeights } from 'office-ui-fabric-react';
+import { Stack, Text, Link, FontWeights, initializeIcons } from 'office-ui-fabric-react';
 import logo from './mqtt-example.png';
 import ConnectionForm from './components/ConnectionForm';
+import SubscribeForm from './components/SubscribeForm';
+import PublishMessageForm from './components/PublishMessageForm';
+
+initializeIcons();
 
 const boldStyle = {
   root: { fontWeight: FontWeights.semibold }
@@ -31,6 +35,10 @@ export const App: React.FunctionComponent = () => {
       </Text>
       <Text variant="large">Mimics the functionality of <Link href="https://www.eclipse.org/paho/clients/js/utility/">Eclipse Paho's</Link> utility page.</Text>
       <ConnectionForm />
+      <Stack horizontal styles={{ root: { width: "100%"} }}>
+        <SubscribeForm />
+        <PublishMessageForm />
+      </Stack>
     </Stack>
   );
 };

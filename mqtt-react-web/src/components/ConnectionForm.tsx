@@ -9,7 +9,7 @@ const QoSOptions : IComboBoxOption[] = [
 
 const ConnectionForm : React.FC = () => {
   return (
-    <Fragment>
+    <Stack>
       <Stack horizontal tokens={{ childrenGap: 50 }} styles={{ root: { width: "100%", textAlign: "start" } }}>
         <TextField label="Host" defaultValue="localhost" />
         <TextField label="Port" defaultValue="5000" />
@@ -42,12 +42,12 @@ const ConnectionForm : React.FC = () => {
         <TextField label="Last Will Topic" defaultValue="/mqtt" />
         <ComboBox label="QoS" options={QoSOptions} selectedKey={0} />
         <div>
-          <Label htmlFor="retain">Retain</Label>
-          <Checkbox id="Retain" />
+          <Label htmlFor="retain-last-will">Retain</Label>
+          <Checkbox id="retain-last-will" />
         </div>
         <TextField label="Last Will Message" multiline resizable={false} />
       </Stack>      
-    </Fragment>
+    </Stack>
   );
 };
 

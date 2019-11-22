@@ -4,6 +4,8 @@ import logo from './mqtt-example.png';
 import ConnectionForm from './components/ConnectionForm';
 import SubscribeForm from './components/SubscribeForm';
 import PublishMessageForm from './components/PublishMessageForm';
+import { HistoryList } from './components/HistoryList';
+import "./index.css";
 
 initializeIcons();
 
@@ -29,7 +31,7 @@ export const App: React.FunctionComponent = () => {
         childrenGap: 15
       }}
     >
-      <img src={logo} alt="logo" />
+      <img className="logo" src={logo} alt="logo" />
       <Text variant="xxLarge" styles={boldStyle}>
         Welcome to MQTT on React Web Example
       </Text>
@@ -39,6 +41,7 @@ export const App: React.FunctionComponent = () => {
         <SubscribeForm />
         <PublishMessageForm />
       </Stack>
+      <HistoryList />
     </Stack>
   );
 };

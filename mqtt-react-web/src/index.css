@@ -1,0 +1,7 @@
+body {
+  overflow-x: scroll;
+}
+
+.logo {
+  min-height: 4em;
+}

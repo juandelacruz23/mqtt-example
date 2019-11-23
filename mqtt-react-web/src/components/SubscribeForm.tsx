@@ -9,7 +9,7 @@ const QoSOptions : IComboBoxOption[] = [
 
 const SubscribeForm = () => {
   return (
-    <Stack tokens={{ childrenGap: 10 }} styles={{ root: { width: "50%", textAlign: "start" } }}>
+    <Stack tokens={{ childrenGap: 10 }} styles={{ root: { textAlign: "start" } }}>
       <Stack horizontal>
         <Label>Topic</Label>
         <TextField defaultValue="message" />

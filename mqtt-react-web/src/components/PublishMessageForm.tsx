@@ -9,7 +9,7 @@ const QoSOptions : IComboBoxOption[] = [
 
 const PublishMessageForm : FC = () => {
   return (
-    <Stack tokens={{ childrenGap: 5 }} styles={{ root: { width: "50%", textAlign: "start" } }}>
+    <Stack tokens={{ childrenGap: 5 }} styles={{ root: { textAlign: "start" } }}>
       <Stack horizontal>
         <TextField label="Topic" defaultValue="message" />
         <ComboBox label="QoS" options={QoSOptions} selectedKey={0} />

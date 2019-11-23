@@ -1,3 +1,7 @@
+:root {
+  --standard-padding: 1em;
+}
+
 body {
   overflow-y: scroll;
   background-color: #faf9f8;
@@ -13,7 +17,6 @@ body {
 
 .card {
   background-color: #ffffff;
-  padding: 1.5em;
   border-radius: 2px;
   box-shadow: 0 1.6px 3.6px 0 rgba(0,0,0,0.132),0 0.3px 0.9px 0 rgba(0,0,0,0.108);
   box-sizing: border-box;
@@ -22,6 +25,14 @@ body {
 
 .card-title {
   margin: 0;
+  padding: var(--standard-padding);
+  padding-bottom: calc(var(--standard-padding) - 13.2px);
+  display: block;
+}
+
+.card-content {
+  padding: var(--standard-padding);
+  padding-top: 0;
 }
 
 #console {

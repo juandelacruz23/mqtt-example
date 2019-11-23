@@ -41,7 +41,7 @@ export const App: React.FunctionComponent = () => {
       <Card title="Connection">
         <ConnectionForm />
       </Card>
-      <Stack horizontal gap={"1em"} styles={{ root: { width: "100%"} }}>
+      <Stack horizontal tokens={{ childrenGap: 5 }} styles={{ root: { width: "100%"} }}>
         <Card title="Subscribe">
           <SubscribeForm />
         </Card>

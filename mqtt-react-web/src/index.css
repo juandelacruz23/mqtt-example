@@ -1,7 +1,23 @@
 body {
-  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 .logo {
   min-height: 4em;
+}
+
+.full-width {
+  width: 100%;
+}
+
+#console {
+  overflow-x: scroll;
+  width: 960px;
+}
+
+#console span {
+  display: block;
+  text-align: start;
+  white-space: nowrap;
+  font-family: monospace;
 }

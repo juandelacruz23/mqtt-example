@@ -4,7 +4,8 @@ import logo from './mqtt-example.png';
 import ConnectionForm from './components/ConnectionForm';
 import SubscribeForm from './components/SubscribeForm';
 import PublishMessageForm from './components/PublishMessageForm';
-import { HistoryList } from './components/HistoryList';
+import HistoryList from './components/HistoryList';
+import Console from './components/Console';
 import "./index.css";
 
 initializeIcons();
@@ -42,6 +43,7 @@ export const App: React.FunctionComponent = () => {
         <PublishMessageForm />
       </Stack>
       <HistoryList />
+      <Console />
     </Stack>
   );
 };

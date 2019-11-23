@@ -24,7 +24,7 @@ export interface IDetailsListGroupedExampleState {
   isCompactMode: boolean;
 }
 
-export class HistoryList extends React.Component<{}, IDetailsListGroupedExampleState> {
+export default class HistoryList extends React.Component<{}, IDetailsListGroupedExampleState> {
   private _root = React.createRef<IDetailsList>();
   private _columns: IColumn[];
 

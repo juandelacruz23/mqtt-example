@@ -6,6 +6,7 @@ import SubscribeForm from './components/SubscribeForm';
 import PublishMessageForm from './components/PublishMessageForm';
 import HistoryList from './components/HistoryList';
 import Console from './components/Console';
+import Card from './components/Card';
 import "./index.css";
 
 initializeIcons();
@@ -37,13 +38,23 @@ export const App: React.FunctionComponent = () => {
         Welcome to MQTT on React Web Example
       </Text>
       <Text variant="large">Mimics the functionality of <Link href="https://www.eclipse.org/paho/clients/js/utility/">Eclipse Paho's</Link> utility page.</Text>
-      <ConnectionForm />
-      <Stack horizontal styles={{ root: { width: "100%"} }}>
-        <SubscribeForm />
-        <PublishMessageForm />
+      <Card title="Connection">
+        <ConnectionForm />
+      </Card>
+      <Stack horizontal gap={"1em"} styles={{ root: { width: "100%"} }}>
+        <Card title="Subscribe">
+          <SubscribeForm />
+        </Card>
+        <Card title="Publish">
+          <PublishMessageForm />
+        </Card>
       </Stack>
-      <HistoryList />
-      <Console />
+      <Card title="History">
+        <HistoryList />
+      </Card>
+      <Card title="Console">
+        <Console />
+      </Card>
     </Stack>
   );
 };

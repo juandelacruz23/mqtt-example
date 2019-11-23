@@ -1,5 +1,6 @@
 body {
   overflow-y: scroll;
+  background-color: #faf9f8;
 }
 
 .logo {
@@ -10,9 +11,21 @@ body {
   width: 100%;
 }
 
+.card {
+  background-color: #ffffff;
+  padding: 1.5em;
+  border-radius: 2px;
+  box-shadow: 0 1.6px 3.6px 0 rgba(0,0,0,0.132),0 0.3px 0.9px 0 rgba(0,0,0,0.108);
+  box-sizing: border-box;
+  width: 960px;
+}
+
+.card-title {
+  margin: 0;
+}
+
 #console {
   overflow-x: scroll;
-  width: 960px;
 }
 
 #console span {
@@ -20,4 +33,8 @@ body {
   text-align: start;
   white-space: nowrap;
   font-family: monospace;
+}
+
+.card-title {
+  text-align: start;
 }

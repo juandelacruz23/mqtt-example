@@ -1,15 +1,26 @@
-import React, { FC } from 'react';
-import { Stack, TextField, ComboBox, IComboBoxOption, Checkbox, Label, DefaultButton } from 'office-ui-fabric-react';
+import React, { FC } from "react";
+import {
+  Stack,
+  TextField,
+  ComboBox,
+  IComboBoxOption,
+  Checkbox,
+  Label,
+  DefaultButton,
+} from "office-ui-fabric-react";
 
-const QoSOptions : IComboBoxOption[] = [
+const QoSOptions: IComboBoxOption[] = [
   { key: 0, text: "0" },
   { key: 1, text: "1" },
   { key: 2, text: "2" },
 ];
 
-const PublishMessageForm : FC = () => {
+const PublishMessageForm: FC = () => {
   return (
-    <Stack tokens={{ childrenGap: 5 }} styles={{ root: { textAlign: "start" } }}>
+    <Stack
+      tokens={{ childrenGap: 5 }}
+      styles={{ root: { textAlign: "start" } }}
+    >
       <Stack tokens={{ childrenGap: 10 }} horizontal>
         <Stack.Item>
           <TextField label="Topic" defaultValue="message" />

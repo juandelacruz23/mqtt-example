@@ -1,14 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   DetailsHeader,
   DetailsList,
   IColumn,
   IDetailsHeaderProps,
   IDetailsList,
-  IRenderFunction,
   SelectionMode,
-} from 'office-ui-fabric-react';
-
+} from "office-ui-fabric-react";
 
 export interface MQTTMessage {
   key: string;
@@ -18,13 +16,16 @@ export interface MQTTMessage {
   qos: number;
 }
 
-export interface IDetailsListGroupedExampleState {
+export interface DetailsListGroupedExampleState {
   items: MQTTMessage[];
   showItemIndexInView: boolean;
   isCompactMode: boolean;
 }
 
-export default class HistoryList extends React.Component<{}, IDetailsListGroupedExampleState> {
+export default class HistoryList extends React.Component<
+  {},
+  DetailsListGroupedExampleState
+> {
   private _root = React.createRef<IDetailsList>();
   private _columns: IColumn[];
 
@@ -33,31 +34,67 @@ export default class HistoryList extends React.Component<{}, IDetailsListGrouped
 
     this.state = {
       items: [
-        { key: 'a', topic: 'message', payload: 'Mqtt is still awesome at 21/11/2019 04:39:19 p. m.', time: "2019-11-21T22:39:21.422Z", qos: 0 },
-        { key: 'b', topic: 'message', payload: 'Mqtt is still awesome at 21/11/2019 04:39:17 p. m.', time: "2019-11-21T22:39:19.407Z", qos: 0 },
-        { key: 'c', topic: 'message', payload: 'Mqtt is still awesome at 21/11/2019 04:39:15 p. m.', time: "2019-11-21T22:39:17.401Z", qos: 0 },
-        { key: 'd', topic: 'message', payload: 'Mqtt is still awesome at 21/11/2019 04:39:13 p. m.', time: "2019-11-21T22:39:15.392Z", qos: 0 },
+        {
+          key: "a",
+          topic: "message",
+          payload: "Mqtt is still awesome at 21/11/2019 04:39:19 p. m.",
+          time: "2019-11-21T22:39:21.422Z",
+          qos: 0,
+        },
+        {
+          key: "b",
+          topic: "message",
+          payload: "Mqtt is still awesome at 21/11/2019 04:39:17 p. m.",
+          time: "2019-11-21T22:39:19.407Z",
+          qos: 0,
+        },
+        {
+          key: "c",
+          topic: "message",
+          payload: "Mqtt is still awesome at 21/11/2019 04:39:15 p. m.",
+          time: "2019-11-21T22:39:17.401Z",
+          qos: 0,
+        },
+        {
+          key: "d",
+          topic: "message",
+          payload: "Mqtt is still awesome at 21/11/2019 04:39:13 p. m.",
+          time: "2019-11-21T22:39:15.392Z",
+          qos: 0,
+        },
       ],
       showItemIndexInView: false,
-      isCompactMode: false
+      isCompactMode: false,
     };
 
     this._columns = [
-      { key: 'topic', name: 'Topic', fieldName: 'topic', minWidth: 100, maxWidth: 100 },
-      { key: 'payload', name: 'Payload', fieldName: 'payload', minWidth: 200 },
-      { key: 'time', name: 'Time', fieldName: 'time', minWidth: 150, maxWidth: 150 },
-      { key: 'qos', name: 'QoS', fieldName: 'qos', minWidth: 50, maxWidth: 50 },
+      {
+        key: "topic",
+        name: "Topic",
+        fieldName: "topic",
+        minWidth: 100,
+        maxWidth: 100,
+      },
+      { key: "payload", name: "Payload", fieldName: "payload", minWidth: 200 },
+      {
+        key: "time",
+        name: "Time",
+        fieldName: "time",
+        minWidth: 150,
+        maxWidth: 150,
+      },
+      { key: "qos", name: "QoS", fieldName: "qos", minWidth: 50, maxWidth: 50 },
     ];
   }
 
-  public componentWillUnmount() {
-    if (this.state.showItemIndexInView) {
-      const itemIndexInView = this._root.current!.getStartItemIndexInView();
-      alert('first item index that was in view: ' + itemIndexInView);
+  public componentWillUnmount(): void {
+    if (this.state.showItemIndexInView && this._root.current) {
+      const itemIndexInView = this._root.current.getStartItemIndexInView();
+      alert(`first item index that was in view: ${itemIndexInView}`);
     }
   }
 
-  public render() {
+  public render(): JSX.Element {
     const { items, isCompactMode } = this.state;
 
     return (
@@ -75,12 +112,24 @@ export default class HistoryList extends React.Component<{}, IDetailsListGrouped
     );
   }
 
-  private _onRenderDetailsHeader(props: IDetailsHeaderProps, _defaultRender?: IRenderFunction<IDetailsHeaderProps>) {
-    return <DetailsHeader {...props} ariaLabelForToggleAllGroupsButton={'Expand collapse groups'} />;
+  private _onRenderDetailsHeader(props: IDetailsHeaderProps): JSX.Element {
+    return (
+      <DetailsHeader
+        {...props}
+        ariaLabelForToggleAllGroupsButton={"Expand collapse groups"}
+      />
+    );
   }
 
-  private _onRenderColumn(item: MQTTMessage, index: number, column: IColumn) {
-    const value = item && column && column.fieldName ? item[column.fieldName as keyof MQTTMessage] : '';
+  private _onRenderColumn(
+    item: MQTTMessage,
+    index: number,
+    column: IColumn,
+  ): JSX.Element {
+    const value =
+      item && column && column.fieldName
+        ? item[column.fieldName as keyof MQTTMessage]
+        : "";
 
     return <div data-is-focusable={true}>{value}</div>;
   }

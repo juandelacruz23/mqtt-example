@@ -1,21 +1,21 @@
-import React, { FC } from 'react';
-import { Text, Separator } from 'office-ui-fabric-react';
+import React, { FC } from "react";
+import { Text, Separator } from "office-ui-fabric-react";
 
-interface ICardProps {
-  title: string,
-  children: JSX.Element,
-  expand?: boolean,
-  className?: string,
+interface CardProps {
+  title: string;
+  children: JSX.Element;
+  expand?: boolean;
+  className?: string;
 }
 
-const Card : FC<ICardProps> = (props : ICardProps) => {
+const Card: FC<CardProps> = props => {
   return (
     <div className={`card ${props.className} ${props.expand ? "expand" : ""}`}>
-      <Text className="card-title" variant="large">{props.title}</Text>
+      <Text className="card-title" variant="large">
+        {props.title}
+      </Text>
       <Separator />
-      <div className="card-content">
-        {props.children}
-      </div>
+      <div className="card-content">{props.children}</div>
     </div>
   );
 };

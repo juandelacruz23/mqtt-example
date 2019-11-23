@@ -23,7 +23,7 @@ export const App: React.FunctionComponent = () => {
       verticalFill
       styles={{
         root: {
-          width: '960px',
+          width: '80%',
           margin: '0 auto',
           textAlign: 'center',
           color: '#605e5c'
@@ -41,15 +41,15 @@ export const App: React.FunctionComponent = () => {
       <Card title="Connection">
         <ConnectionForm />
       </Card>
-      <Stack horizontal tokens={{ childrenGap: 5 }} styles={{ root: { width: "100%"} }}>
-        <Card title="Subscribe">
+      <Stack horizontal tokens={{ childrenGap: 5 }} className="expand">
+        <Card title="Subscribe" className="half">
           <SubscribeForm />
         </Card>
-        <Card title="Publish">
+        <Card title="Publish" className="half">
           <PublishMessageForm />
         </Card>
       </Stack>
-      <Card title="History">
+      <Card title="History" expand>
         <HistoryList />
       </Card>
       <Card title="Console">

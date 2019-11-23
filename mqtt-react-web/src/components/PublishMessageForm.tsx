@@ -10,8 +10,10 @@ const QoSOptions : IComboBoxOption[] = [
 const PublishMessageForm : FC = () => {
   return (
     <Stack tokens={{ childrenGap: 5 }} styles={{ root: { textAlign: "start" } }}>
-      <Stack horizontal>
-        <TextField label="Topic" defaultValue="message" />
+      <Stack tokens={{ childrenGap: 10 }} horizontal>
+        <Stack.Item>
+          <TextField label="Topic" defaultValue="message" />
+        </Stack.Item>
         <ComboBox label="QoS" options={QoSOptions} selectedKey={0} />
         <div>
           <Label htmlFor="retain-message">Retain</Label>

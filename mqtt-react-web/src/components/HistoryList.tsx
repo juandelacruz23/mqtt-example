@@ -43,10 +43,10 @@ export default class HistoryList extends React.Component<{}, IDetailsListGrouped
     };
 
     this._columns = [
-      { key: 'topic', name: 'Topic', fieldName: 'topic', minWidth: 75 },
-      { key: 'payload', name: 'Payload', fieldName: 'payload', minWidth: 200, maxWidth: 200 },
-      { key: 'time', name: 'Time', fieldName: 'time', minWidth: 75 },
-      { key: 'qos', name: 'QoS', fieldName: 'qos', minWidth: 50 },
+      { key: 'topic', name: 'Topic', fieldName: 'topic', minWidth: 100, maxWidth: 100 },
+      { key: 'payload', name: 'Payload', fieldName: 'payload', minWidth: 200 },
+      { key: 'time', name: 'Time', fieldName: 'time', minWidth: 150, maxWidth: 150 },
+      { key: 'qos', name: 'QoS', fieldName: 'qos', minWidth: 50, maxWidth: 50 },
     ];
   }
 

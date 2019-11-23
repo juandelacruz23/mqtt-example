@@ -20,7 +20,15 @@ body {
   border-radius: 2px;
   box-shadow: 0 1.6px 3.6px 0 rgba(0,0,0,0.132),0 0.3px 0.9px 0 rgba(0,0,0,0.108);
   box-sizing: border-box;
-  width: 960px;
+  max-width: 100%;
+}
+
+.expand {
+  width: 100%;
+}
+
+.half {
+  flex: 1;
 }
 
 .card-title {
@@ -48,4 +56,22 @@ body {
 
 .card-title {
   text-align: start;
+}
+
+.subscribe-label {
+  width: 20%;
+  text-align: end;
+  padding-right: 1em;
+}
+
+.subscribe-buttons {
+  padding-left: 20%;
+}
+
+.fill-space {
+  flex: 1;
+}
+
+.host-field, .client-id-field {
+  flex: 1;
 }

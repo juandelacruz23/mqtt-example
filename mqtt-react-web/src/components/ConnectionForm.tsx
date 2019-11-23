@@ -11,15 +11,15 @@ const ConnectionForm : React.FC = () => {
   return (
     <Stack>
       <Stack horizontal tokens={{ childrenGap: 50 }} styles={{ root: { width: "100%", textAlign: "start" } }}>
-        <TextField label="Host" defaultValue="localhost" />
-        <TextField label="Port" defaultValue="5000" />
-        <TextField label="Client ID" defaultValue="js-utility-aZsoR" />
-        <Stack.Item align="end">
+        <TextField className="host-field" label="Host" defaultValue="localhost" />
+        <TextField className="port-field" label="Port" defaultValue="5000" />
+        <TextField className="client-id-field" label="Client ID" defaultValue="js-utility-aZsoR" />
+        <Stack.Item className="connect-button-field" align="end">
           <DefaultButton text="Connect" allowDisabledFocus />
         </Stack.Item>
       </Stack>
       <Stack horizontal tokens={{ childrenGap: 50 }} styles={{ root: { width: "100%", textAlign: "start" } }}>
-        <TextField label="Path" defaultValue="/mqtt" />
+        <TextField className="path-field" label="Path" defaultValue="/mqtt" />
         <TextField label="Username"/>
         <TextField label="Password" type="password" />
         <TextField label="Keepalive" defaultValue="60" type="number" />
@@ -45,7 +45,7 @@ const ConnectionForm : React.FC = () => {
           <Label htmlFor="retain-last-will">Retain</Label>
           <Checkbox id="retain-last-will" />
         </div>
-        <TextField label="Last Will Message" multiline resizable={false} />
+        <TextField className="fill-space" label="Last Will Message" multiline resizable={false} />
       </Stack>      
     </Stack>
   );

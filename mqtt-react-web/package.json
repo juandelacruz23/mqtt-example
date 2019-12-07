@@ -13,11 +13,14 @@
     "gen": "npx plop"
   },
   "dependencies": {
+    "formik": "^2.0.6",
     "office-ui-fabric-react": "^7.0.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "yup": "^0.27.0"
   },
   "devDependencies": {
+    "@types/yup": "^0.26.24",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
     "eslint": "^6.7.0",

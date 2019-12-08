@@ -21,12 +21,12 @@ const INITIAL_STATE = {
   path: "",
 };
 
-type State = typeof INITIAL_STATE;
+export type AppState = typeof INITIAL_STATE;
 
 export function reducer(
-  state: State = INITIAL_STATE,
+  state: AppState = INITIAL_STATE,
   action: AppAction = { type: "DEFAULT" },
-): State {
+): AppState {
   switch (action.type) {
     case CHANGE_VALUE:
       return {

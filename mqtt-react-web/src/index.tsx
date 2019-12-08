@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "./App";
 import { mergeStyles } from "office-ui-fabric-react";
+import { Provider } from "react-redux";
+import { store } from "./redux";
 
 // Inject some global styles
 mergeStyles({
@@ -13,4 +15,12 @@ mergeStyles({
   },
 });
 
-ReactDOM.render(<App />, document.getElementById("app"));
+function Main(): JSX.Element {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
+
+ReactDOM.render(<Main />, document.getElementById("app"));

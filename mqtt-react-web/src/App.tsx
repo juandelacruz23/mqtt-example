@@ -7,13 +7,13 @@ import {
   initializeIcons,
 } from "office-ui-fabric-react";
 import logo from "./mqtt-example.png";
-import ConnectionForm from "./components/ConnectionForm";
 import SubscribeForm from "./components/SubscribeForm";
 import PublishMessageForm from "./components/PublishMessageForm";
 import HistoryList from "./components/HistoryList";
 import Console from "./components/Console";
 import Card from "./components/Card";
 import "./index.css";
+import ConnectionFormContainer from "./components/ConnectionForm/ConnectionFormContainer";
 
 initializeIcons();
 
@@ -51,7 +51,7 @@ export const App: React.FunctionComponent = () => {
         utility page.
       </Text>
       <Card title="Connection">
-        <ConnectionForm />
+        <ConnectionFormContainer />
       </Card>
       <Stack horizontal tokens={{ childrenGap: 5 }} className="expand">
         <Card title="Subscribe" className="half">

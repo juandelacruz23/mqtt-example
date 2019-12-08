@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main reducer should return initialState as default 1`] = `
+Object {
+  "clientId": "",
+  "host": "",
+  "path": "",
+  "port": 0,
+}
+`;

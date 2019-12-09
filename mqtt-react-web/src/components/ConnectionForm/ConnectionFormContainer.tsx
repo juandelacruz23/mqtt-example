@@ -1,16 +1,25 @@
 import React from "react";
 import { Formik } from "formik";
-import ConnectionForm, { formInitialValues } from "./ConnectionForm";
+import ConnectionForm, {
+  formInitialValues,
+  ConnectionFormProps,
+} from "./ConnectionForm";
+import { connect } from "react-redux";
+import { changeValue, AppAction } from "../../redux/mainDuck";
 
-const ConnectionFormContainer = (): JSX.Element => {
+interface ConnectionContainerProps {
+  setConnectionData: (props: ConnectionFormProps) => AppAction;
+}
+
+const ConnectionFormContainer: React.FC<ConnectionContainerProps> = ({
+  setConnectionData,
+}): JSX.Element => {
   return (
     <Formik
       initialValues={formInitialValues}
       onSubmit={(values, { setSubmitting }): void => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
+        setConnectionData(values);
+        setSubmitting(false);
       }}
     >
       {ConnectionForm}
@@ -18,4 +27,9 @@ const ConnectionFormContainer = (): JSX.Element => {
   );
 };
 
-export default ConnectionFormContainer;
+const mapDispatchToProps: ConnectionContainerProps = {
+  setConnectionData: (props: ConnectionFormProps): AppAction =>
+    changeValue(props),
+};
+
+export default connect(null, mapDispatchToProps)(ConnectionFormContainer);

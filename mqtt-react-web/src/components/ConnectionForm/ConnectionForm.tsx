@@ -25,7 +25,7 @@ export const formInitialValues = {
   path: "/mqtt",
 };
 
-type ConnectionFormProps = typeof formInitialValues;
+export type ConnectionFormProps = typeof formInitialValues;
 
 function ConnectionForm(formik: FormikProps<ConnectionFormProps>): JSX.Element {
   return (

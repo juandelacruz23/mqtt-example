@@ -64,7 +64,7 @@ export const App: React.FunctionComponent = () => {
       <Card title="History" expand>
         <HistoryList />
       </Card>
-      <Card title="Console">
+      <Card title="Console" expand>
         <Console />
       </Card>
     </Stack>

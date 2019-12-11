@@ -10,7 +10,11 @@ interface CardProps {
 
 const Card: FC<CardProps> = props => {
   return (
-    <div className={`card ${props.className} ${props.expand ? "expand" : ""}`}>
+    <div
+      className={`card ${props.className || ""} ${
+        props.expand ? "expand" : ""
+      }`}
+    >
       <Text className="card-title" variant="large">
         {props.title}
       </Text>

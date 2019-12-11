@@ -1,10 +1,18 @@
-import { createStore, Store } from "redux";
+import { createStore, Store, applyMiddleware } from "redux";
+import { combineEpics, createEpicMiddleware } from "redux-observable";
 
-import { reducer, AppState, AppAction } from "./mainDuck";
+import { reducer, AppState, BaseAction } from "./mainDuck";
+import { sendEventsEpic } from "./MQTTEpic";
 
-export const store: Store<AppState, AppAction> = createStore<
+export const rootEpic = combineEpics(sendEventsEpic);
+
+const epicMiddleware = createEpicMiddleware();
+
+export const store: Store<AppState, BaseAction> = createStore<
   AppState,
-  AppAction,
+  BaseAction,
   {},
   {}
->(reducer);
+>(reducer, applyMiddleware(epicMiddleware));
+
+epicMiddleware.run(rootEpic);

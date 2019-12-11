@@ -5,10 +5,11 @@ import ConnectionForm, {
   ConnectionFormProps,
 } from "./ConnectionForm";
 import { connect } from "react-redux";
-import { changeValue, AppAction } from "../../redux/mainDuck";
+import { AppAction, connectClient } from "../../redux/mainDuck";
+import MQTTOptions from "../../paho.mqtt.types/MQTTOptions";
 
 interface ConnectionContainerProps {
-  setConnectionData: (props: ConnectionFormProps) => AppAction;
+  setConnectionData: (props: ConnectionFormProps) => AppAction<MQTTOptions>;
 }
 
 const ConnectionFormContainer: React.FC<ConnectionContainerProps> = ({
@@ -28,8 +29,7 @@ const ConnectionFormContainer: React.FC<ConnectionContainerProps> = ({
 };
 
 const mapDispatchToProps: ConnectionContainerProps = {
-  setConnectionData: (props: ConnectionFormProps): AppAction =>
-    changeValue(props),
+  setConnectionData: (props: ConnectionFormProps) => connectClient(props),
 };
 
 export default connect(null, mapDispatchToProps)(ConnectionFormContainer);

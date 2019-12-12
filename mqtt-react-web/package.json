@@ -8,7 +8,7 @@
     "build": "just-scripts build",
     "just": "just-scripts",
     "start": "just-scripts start",
-    "test": "just-scripts test",
+    "test": "jest",
     "change": "npx beachball change",
     "gen": "npx plop"
   },

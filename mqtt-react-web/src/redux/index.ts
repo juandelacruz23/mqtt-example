@@ -6,7 +6,7 @@ import { sendEventsEpic } from "./MQTTEpic";
 
 export const rootEpic = combineEpics(sendEventsEpic);
 
-const epicMiddleware = createEpicMiddleware();
+const epicMiddleware = createEpicMiddleware<BaseAction, BaseAction, AppState>();
 
 export const store: Store<AppState, BaseAction> = createStore<
   AppState,

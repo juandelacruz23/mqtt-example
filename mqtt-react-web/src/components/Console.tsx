@@ -8,13 +8,15 @@ export interface ConsoleEvent {
 }
 
 const Console: React.FC = () => {
-  const event: ConsoleEvent = useSelector((state: AppState) => state.event);
+  const event: ConsoleEvent[] = useSelector((state: AppState) => state.events);
   console.log(event);
   return (
     <div id="console" className="full-width">
-      <span>
-        {new Date(event.timestamp).toLocaleString()} - {event.value}
-      </span>
+      {event.map(event => (
+        <span key={`event-${event.timestamp}`}>
+          {new Date(event.timestamp).toLocaleString()} - {event.value}
+        </span>
+      ))}
     </div>
   );
 };

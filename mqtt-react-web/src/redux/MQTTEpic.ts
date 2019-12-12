@@ -1,7 +1,14 @@
 import { Observable, from, of } from "rxjs";
-import { switchMapTo, delay, map, concatMap, timestamp } from "rxjs/operators";
-import { ofType } from "redux-observable";
-import { CONNECT, changeValue, BaseAction } from "./mainDuck";
+import {
+  switchMapTo,
+  delay,
+  map,
+  concatMap,
+  timestamp,
+  withLatestFrom,
+} from "rxjs/operators";
+import { ofType, StateObservable } from "redux-observable";
+import { CONNECT, changeValue, BaseAction, AppState } from "./mainDuck";
 
 const consoleEvents$ = from([
   "INFO - Connecting to Server: [Host: localhost, Port: 5000, Path: /mqtt, ID: js-utility-BnDHz]",
@@ -13,10 +20,19 @@ const consoleEvents$ = from([
   timestamp(),
 );
 
-export const sendEventsEpic = (
+export function sendEventsEpic(
   action$: Observable<BaseAction>,
-): Observable<BaseAction> =>
-  action$.pipe(
+  state$: StateObservable<AppState>,
+): Observable<BaseAction> {
+  return action$.pipe(
     ofType(CONNECT),
-    switchMapTo(consoleEvents$.pipe(map(event => changeValue({ event })))),
+    switchMapTo(
+      consoleEvents$.pipe(
+        withLatestFrom(state$),
+        map(([event, state]) =>
+          changeValue({ events: [...state.events, event] }),
+        ),
+      ),
+    ),
   );
+}

@@ -35,10 +35,12 @@ const INITIAL_STATE = {
   port: 0,
   clientId: ``,
   path: "",
-  event: {
-    value: "INFO - Starting Eclipse Paho JavaScript Utility.",
-    timestamp: Date.now(),
-  },
+  events: [
+    {
+      value: "INFO - Starting Eclipse Paho JavaScript Utility.",
+      timestamp: Date.now(),
+    },
+  ],
 };
 
 export type AppState = typeof INITIAL_STATE;

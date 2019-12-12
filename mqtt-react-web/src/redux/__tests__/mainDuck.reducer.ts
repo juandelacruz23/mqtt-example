@@ -1,3 +1,4 @@
+import "../date.mock";
 import { reducer, changeValue } from "../mainDuck";
 
 describe("main reducer", () => {

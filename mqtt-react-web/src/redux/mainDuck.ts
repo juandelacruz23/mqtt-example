@@ -32,6 +32,7 @@ export function connectClient(
 
 const INITIAL_STATE = {
   host: "",
+  isConnected: false,
   port: 0,
   clientId: ``,
   path: "",

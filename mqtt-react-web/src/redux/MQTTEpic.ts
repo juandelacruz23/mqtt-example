@@ -1,4 +1,4 @@
-import { Observable, from, of } from "rxjs";
+import { Observable, from, of, concat } from "rxjs";
 import {
   switchMapTo,
   delay,
@@ -6,6 +6,7 @@ import {
   concatMap,
   timestamp,
   withLatestFrom,
+  startWith,
 } from "rxjs/operators";
 import { ofType, StateObservable } from "redux-observable";
 import { CONNECT, changeValue, BaseAction, AppState } from "./mainDuck";
@@ -27,11 +28,15 @@ export function sendEventsEpic(
   return action$.pipe(
     ofType(CONNECT),
     switchMapTo(
-      consoleEvents$.pipe(
-        withLatestFrom(state$),
-        map(([event, state]) =>
-          changeValue({ events: [...state.events, event] }),
+      concat(
+        consoleEvents$.pipe(
+          withLatestFrom(state$),
+          map(([event, state]) =>
+            changeValue({ events: [...state.events, event] }),
+          ),
+          startWith(changeValue({ isConnected: true })),
         ),
+        of(changeValue({ isConnected: false })),
       ),
     ),
   );

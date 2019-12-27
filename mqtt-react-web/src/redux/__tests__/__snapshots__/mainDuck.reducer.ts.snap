@@ -10,6 +10,7 @@ Object {
     },
   ],
   "host": "",
+  "isConnected": false,
   "path": "",
   "port": 0,
 }

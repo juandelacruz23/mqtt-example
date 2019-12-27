@@ -1094,6 +1094,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.5.tgz#c1920150f7b90708a7d0f3add12a06bc9123c055"
   integrity sha512-RElZIr/7JreF1eY6oD5RF3kpmdcreuQPjg5ri4oQ5g9sq7YWU8HkfB3eH8GwAwxf5OaCh0VPi7r4N/yoTGelrA==
 
+"@types/paho-mqtt@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@types/paho-mqtt/-/paho-mqtt-1.0.4.tgz#e5bb9f1d742e3a60baf90ade083cb89979c7cc3e"
+  integrity sha512-6dr4CEFZESwhY278sg0vTazsnAdwmloD5edD/7jCkBS5chKhtdStNpdLlaPdbTqmEeOhsEb+NJYVKbJF5sArBg==
+
 "@types/prop-types@*":
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"

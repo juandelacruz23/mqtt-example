@@ -1,15 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../redux/mainDuck";
-
-export interface ConsoleEvent {
-  value: string;
-  timestamp: number;
-}
+import { ConsoleEvent } from "../redux/MQTTEpic";
 
 const Console: React.FC = () => {
   const event: ConsoleEvent[] = useSelector((state: AppState) => state.events);
-  console.log(event);
   return (
     <div id="console" className="full-width">
       {event.map(event => (

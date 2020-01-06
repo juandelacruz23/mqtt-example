@@ -52,6 +52,7 @@ export function reducer(
 ): AppState {
   switch (action.type) {
     case CHANGE_VALUE:
+    case CONNECT:
       return {
         ...state,
         ...action.payload,

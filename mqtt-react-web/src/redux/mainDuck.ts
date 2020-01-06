@@ -10,12 +10,15 @@ export interface AppAction<T> extends Action<string> {
   payload?: T;
 }
 
-export interface BaseAction extends AppAction<object> {
-  type: string;
-  payload?: object;
+export interface FixedAppAction<T> extends AppAction<T> {
+  payload: T;
 }
 
-export function changeValue(newValue: object): AppAction<object> {
+export interface BaseAction extends FixedAppAction<object> {
+  payload: object;
+}
+
+export function changeValue(newValue: object): BaseAction {
   return {
     type: CHANGE_VALUE,
     payload: newValue,
@@ -24,12 +27,14 @@ export function changeValue(newValue: object): AppAction<object> {
 
 export function connectClient(
   mqttOptions: MQTTOptions,
-): AppAction<MQTTOptions> {
+): FixedAppAction<MQTTOptions> {
   return {
     type: CONNECT,
     payload: mqttOptions,
   } as const;
 }
+
+export type MQTTConnectAction = ReturnType<typeof connectClient>;
 
 export function disconnectClient(): AppAction<undefined> {
   return {

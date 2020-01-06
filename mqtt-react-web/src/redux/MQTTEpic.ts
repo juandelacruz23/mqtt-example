@@ -17,6 +17,7 @@ import {
   BaseAction,
   AppState,
   DISCONNECT,
+  MQTTConnectAction,
 } from "./mainDuck";
 import { Client } from "../mqtt-observable/MqttObservable";
 
@@ -25,15 +26,14 @@ export function sendEventsEpic(
   state$: StateObservable<AppState>,
 ): Observable<BaseAction> {
   return action$.pipe(
-    ofType(CONNECT),
-    withLatestFrom(state$),
-    switchMap<[BaseAction, AppState], Observable<BaseAction>>(
-      ([, state]: [BaseAction, AppState]) => {
+    ofType<BaseAction, MQTTConnectAction>(CONNECT),
+    switchMap<MQTTConnectAction, Observable<BaseAction>>(
+      ({ payload }: MQTTConnectAction) => {
         const MqttClient = new Client(
-          state.host,
-          state.port,
-          state.path,
-          state.clientId,
+          payload.host,
+          payload.port,
+          payload.path,
+          payload.clientId,
         );
 
         const onConnect$ = MqttClient.connectObservable().pipe(

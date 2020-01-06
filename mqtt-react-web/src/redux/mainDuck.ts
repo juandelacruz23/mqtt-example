@@ -3,6 +3,7 @@ import MQTTOptions from "../paho.mqtt.types/MQTTOptions";
 
 const CHANGE_VALUE = "CHANGE_VALUE";
 export const CONNECT = "CONNECT";
+export const DISCONNECT = "DISCONNECT";
 
 export interface AppAction<T> extends Action<string> {
   type: string;
@@ -28,6 +29,12 @@ export function connectClient(
     type: CONNECT,
     payload: mqttOptions,
   } as const;
+}
+
+export function disconnectClient(): AppAction<undefined> {
+  return {
+    type: DISCONNECT,
+  };
 }
 
 const INITIAL_STATE = {
@@ -61,3 +68,9 @@ export function reducer(
       return state;
   }
 }
+
+export default {
+  connectClient,
+  changeValue,
+  disconnectClient,
+};

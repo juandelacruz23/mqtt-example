@@ -4,22 +4,28 @@ import ConnectionForm, {
   formInitialValues,
   ConnectionFormProps,
 } from "./ConnectionForm";
-import { connect } from "react-redux";
-import { AppAction, connectClient } from "../../redux/mainDuck";
+import { connect, useSelector } from "react-redux";
+import actions, { AppAction, AppState } from "../../redux/mainDuck";
 import MQTTOptions from "../../paho.mqtt.types/MQTTOptions";
 
 interface ConnectionContainerProps {
-  setConnectionData: (props: ConnectionFormProps) => AppAction<MQTTOptions>;
+  connectClient: (props: ConnectionFormProps) => AppAction<MQTTOptions>;
+  disconnectClient: () => AppAction<undefined>;
 }
 
 const ConnectionFormContainer: React.FC<ConnectionContainerProps> = ({
-  setConnectionData,
+  connectClient,
+  disconnectClient,
 }): JSX.Element => {
+  const isConnected: boolean = useSelector(
+    (state: AppState) => state.isConnected,
+  );
   return (
     <Formik
       initialValues={formInitialValues}
       onSubmit={(values, { setSubmitting }): void => {
-        setConnectionData({ ...values, port: +values.port });
+        if (!isConnected) connectClient({ ...values, port: +values.port });
+        else disconnectClient();
         setSubmitting(false);
       }}
     >
@@ -29,7 +35,8 @@ const ConnectionFormContainer: React.FC<ConnectionContainerProps> = ({
 };
 
 const mapDispatchToProps: ConnectionContainerProps = {
-  setConnectionData: (props: ConnectionFormProps) => connectClient(props),
+  connectClient: (props: ConnectionFormProps) => actions.connectClient(props),
+  disconnectClient: () => actions.disconnectClient(),
 };
 
 export default connect(null, mapDispatchToProps)(ConnectionFormContainer);

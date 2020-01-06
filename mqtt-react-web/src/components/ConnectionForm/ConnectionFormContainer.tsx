@@ -19,7 +19,7 @@ const ConnectionFormContainer: React.FC<ConnectionContainerProps> = ({
     <Formik
       initialValues={formInitialValues}
       onSubmit={(values, { setSubmitting }): void => {
-        setConnectionData(values);
+        setConnectionData({ ...values, port: +values.port });
         setSubmitting(false);
       }}
     >

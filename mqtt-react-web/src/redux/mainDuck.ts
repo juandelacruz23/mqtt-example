@@ -10,13 +10,9 @@ export interface AppAction<T> extends Action<string> {
   payload?: T;
 }
 
-export interface FixedAppAction<T> extends AppAction<T> {
-  payload: T;
-}
+export type FixedAppAction<T> = Required<AppAction<T>>;
 
-export interface BaseAction extends FixedAppAction<object> {
-  payload: object;
-}
+export type BaseAction = FixedAppAction<object>;
 
 export function changeValue(newValue: object): BaseAction {
   return {

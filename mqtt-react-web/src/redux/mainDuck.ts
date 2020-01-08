@@ -4,6 +4,7 @@ import MQTTOptions from "../paho.mqtt.types/MQTTOptions";
 const CHANGE_VALUE = "CHANGE_VALUE";
 export const CONNECT = "CONNECT";
 export const DISCONNECT = "DISCONNECT";
+export const CONSOLE_EVENT = "CONSOLE_EVENT";
 
 export interface AppAction<T> extends Action<string> {
   type: string;
@@ -31,6 +32,17 @@ export function connectClient(
 }
 
 export type MQTTConnectAction = ReturnType<typeof connectClient>;
+
+export function consoleEvent(
+  event: ConsoleEvent,
+): FixedAppAction<ConsoleEvent> {
+  return {
+    type: CONSOLE_EVENT,
+    payload: event,
+  } as const;
+}
+
+export type ConsoleEventAction = ReturnType<typeof consoleEvent>;
 
 export function disconnectClient(): AppAction<undefined> {
   return {

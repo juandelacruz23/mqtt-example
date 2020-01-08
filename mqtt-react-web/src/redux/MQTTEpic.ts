@@ -2,7 +2,6 @@ import { Observable, of, concat, merge } from "rxjs";
 import {
   map,
   timestamp,
-  withLatestFrom,
   startWith,
   mapTo,
   switchMap,
@@ -10,20 +9,19 @@ import {
   switchMapTo,
   take,
 } from "rxjs/operators";
-import { ofType, StateObservable } from "redux-observable";
+import { ofType } from "redux-observable";
 import {
   CONNECT,
   changeValue,
   BaseAction,
-  AppState,
   DISCONNECT,
   MQTTConnectAction,
+  consoleEvent,
 } from "./mainDuck";
 import { Client } from "../mqtt-observable/MqttObservable";
 
 export function sendEventsEpic(
   action$: Observable<BaseAction>,
-  state$: StateObservable<AppState>,
 ): Observable<BaseAction> {
   return action$.pipe(
     ofType<BaseAction, MQTTConnectAction>(CONNECT),
@@ -53,15 +51,12 @@ export function sendEventsEpic(
           onConnect$,
         );
 
-        return merge(
+        const consoleEvents$ = merge(
           connectionEvents$,
           action$.pipe(ofType(DISCONNECT), switchMapTo(disconnect$), take(1)),
-        ).pipe(
-          timestamp(),
-          withLatestFrom(state$),
-          map(([event, state]: [ConsoleEvent, AppState]) =>
-            changeValue({ events: [...state.events, event] }),
-          ),
+        ).pipe(timestamp(), map(consoleEvent));
+
+        return merge(consoleEvents$).pipe(
           startWith(changeValue({ isConnected: true })),
           endWith(changeValue({ isConnected: false })),
         );

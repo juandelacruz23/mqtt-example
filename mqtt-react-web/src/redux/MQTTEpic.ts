@@ -10,7 +10,7 @@ import {
   take,
   takeUntil,
   takeLast,
-  concatMapTo,
+  share,
 } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import {
@@ -49,8 +49,9 @@ export function sendEventsEpic(
 
         const disconnect$ = action$.pipe(
           ofType(DISCONNECT),
-          switchMapTo(onDisconnect$),
           take(1),
+          switchMapTo(onDisconnect$),
+          share(),
         );
 
         const connectionEvents$: Observable<string> = concat(
@@ -62,7 +63,7 @@ export function sendEventsEpic(
         const topic = "message";
         const messages$ = onConnect$.pipe(
           takeLast(1),
-          concatMapTo(MqttClient.subscribeObservable(topic)),
+          switchMapTo(MqttClient.subscribeObservable(topic)),
           map(message =>
             messageReceived({
               time: new Date(),

@@ -11,8 +11,10 @@ Object {
   ],
   "host": "fake host",
   "isConnected": false,
+  "messages": Array [],
   "path": "fake path",
   "port": 5000,
+  "topic": "message",
 }
 `;
 
@@ -27,7 +29,9 @@ Object {
   ],
   "host": "",
   "isConnected": false,
+  "messages": Array [],
   "path": "",
   "port": 0,
+  "topic": "message",
 }
 `;

@@ -7,6 +7,8 @@ import {
   DefaultButton,
 } from "office-ui-fabric-react";
 import { Form, Formik, FormikProps } from "formik";
+import { useSelector } from "react-redux";
+import { AppState } from "../redux/mainDuck";
 
 const defaultSubscriptionValues = {
   topic: "message",
@@ -22,7 +24,11 @@ const QoSOptions: IComboBoxOption[] = [
 const FormInternal = (
   formik: FormikProps<{ qos: number; topic: string }>,
 ): JSX.Element => {
-  const disabled = formik.values.qos == null || !formik.values.topic;
+  const isConnected: boolean = useSelector(
+    (state: AppState) => state.isConnected,
+  );
+  const hasEmptyValues = formik.values.qos == null || !formik.values.topic;
+  const disabled = hasEmptyValues || !isConnected;
   return (
     <Form>
       <Stack
@@ -34,11 +40,16 @@ const FormInternal = (
           <TextField
             {...formik.getFieldProps("topic")}
             className="fill-space"
+            disabled={disabled}
           />
         </Stack>
         <Stack horizontal>
           <Label className="subscribe-label">QoS</Label>
-          <select {...formik.getFieldProps("qos")} className="fill-space">
+          <select
+            {...formik.getFieldProps("qos")}
+            className="fill-space"
+            disabled={disabled}
+          >
             {QoSOptions.map(qosOption => (
               <option
                 key={`subscribe-qos-${qosOption.key}`}

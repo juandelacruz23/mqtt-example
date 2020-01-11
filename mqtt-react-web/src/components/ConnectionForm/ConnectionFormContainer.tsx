@@ -6,7 +6,7 @@ import ConnectionForm, {
 } from "./ConnectionForm";
 import { connect, useSelector } from "react-redux";
 import actions, { AppAction, AppState } from "../../redux/mainDuck";
-import MQTTOptions from "../../paho.mqtt.types/MQTTOptions";
+import MQTTOptions from "../../types/MQTTOptions";
 
 interface ConnectionContainerProps {
   connectClient: (props: ConnectionFormProps) => AppAction<MQTTOptions>;

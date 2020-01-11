@@ -1,13 +1,15 @@
 import { Action } from "redux";
-import MQTTOptions from "../paho.mqtt.types/MQTTOptions";
+import MQTTOptions from "../types/MQTTOptions";
 import HistoryItem from "../types/HistoryItem";
 import { ConsoleEvent } from "./MQTTEpic";
+import Subscription from "../types/Subscription";
 
 const CHANGE_VALUE = "CHANGE_VALUE";
 export const CONNECT = "CONNECT";
 export const DISCONNECT = "DISCONNECT";
 export const CONSOLE_EVENT = "CONSOLE_EVENT";
 export const MESSAGE_RECEIVED = "MESSAGE_RECEIVED";
+export const SUBSCRIBE = "SUBSCRIBE";
 
 export interface AppAction<T> extends Action<string> {
   type: string;
@@ -62,6 +64,16 @@ export function disconnectClient(): AppAction<undefined> {
     type: DISCONNECT,
   };
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function subscribe(subscription: Subscription) {
+  return {
+    type: SUBSCRIBE,
+    payload: subscription,
+  };
+}
+
+export type SubscribeAction = ReturnType<typeof subscribe>;
 
 const INITIAL_STATE = {
   host: "",

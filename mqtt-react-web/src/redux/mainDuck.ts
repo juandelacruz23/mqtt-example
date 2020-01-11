@@ -1,10 +1,13 @@
 import { Action } from "redux";
 import MQTTOptions from "../paho.mqtt.types/MQTTOptions";
+import HistoryItem from "../types/HistoryItem";
+import { ConsoleEvent } from "./MQTTEpic";
 
 const CHANGE_VALUE = "CHANGE_VALUE";
 export const CONNECT = "CONNECT";
 export const DISCONNECT = "DISCONNECT";
 export const CONSOLE_EVENT = "CONSOLE_EVENT";
+export const MESSAGE_RECEIVED = "MESSAGE_RECEIVED";
 
 export interface AppAction<T> extends Action<string> {
   type: string;
@@ -44,6 +47,16 @@ export function consoleEvent(
 
 export type ConsoleEventAction = ReturnType<typeof consoleEvent>;
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function messageReceived(newMessage: HistoryItem) {
+  return {
+    type: MESSAGE_RECEIVED,
+    payload: newMessage,
+  } as const;
+}
+
+export type MesssageReceivedAction = ReturnType<typeof messageReceived>;
+
 export function disconnectClient(): AppAction<undefined> {
   return {
     type: DISCONNECT,
@@ -62,9 +75,14 @@ const INITIAL_STATE = {
       timestamp: Date.now(),
     },
   ],
+  messages: [],
+  topic: "message",
 };
 
-export type AppState = typeof INITIAL_STATE;
+// Little hack to override the "messages" type
+export type AppState = Omit<typeof INITIAL_STATE, "messages"> & {
+  messages: HistoryItem[];
+};
 
 export function reducer(
   state: AppState = INITIAL_STATE,

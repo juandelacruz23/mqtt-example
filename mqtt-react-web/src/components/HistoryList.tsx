@@ -7,62 +7,28 @@ import {
   IDetailsList,
   SelectionMode,
 } from "office-ui-fabric-react";
+import { connect } from "react-redux";
+import { AppState } from "../redux/mainDuck";
+import HistoryItem from "../types/HistoryItem";
 
-export interface MQTTMessage {
-  key: string;
-  topic: string;
-  payload: string;
-  time: string;
-  qos: number;
-}
-
-export interface DetailsListGroupedExampleState {
-  items: MQTTMessage[];
+export interface HistoryListState {
   showItemIndexInView: boolean;
   isCompactMode: boolean;
 }
 
-export default class HistoryList extends React.Component<
-  {},
-  DetailsListGroupedExampleState
-> {
+interface HistoryListProps {
+  messages: HistoryItem[];
+  topic: string;
+}
+
+class HistoryList extends React.Component<HistoryListProps, HistoryListState> {
   private _root = React.createRef<IDetailsList>();
   private _columns: IColumn[];
 
-  constructor(props: {}) {
+  constructor(props: HistoryListProps) {
     super(props);
 
     this.state = {
-      items: [
-        {
-          key: "a",
-          topic: "message",
-          payload: "Mqtt is still awesome at 21/11/2019 04:39:19 p. m.",
-          time: "2019-11-21T22:39:21.422Z",
-          qos: 0,
-        },
-        {
-          key: "b",
-          topic: "message",
-          payload: "Mqtt is still awesome at 21/11/2019 04:39:17 p. m.",
-          time: "2019-11-21T22:39:19.407Z",
-          qos: 0,
-        },
-        {
-          key: "c",
-          topic: "message",
-          payload: "Mqtt is still awesome at 21/11/2019 04:39:15 p. m.",
-          time: "2019-11-21T22:39:17.401Z",
-          qos: 0,
-        },
-        {
-          key: "d",
-          topic: "message",
-          payload: "Mqtt is still awesome at 21/11/2019 04:39:13 p. m.",
-          time: "2019-11-21T22:39:15.392Z",
-          qos: 0,
-        },
-      ],
       showItemIndexInView: false,
       isCompactMode: false,
     };
@@ -72,18 +38,29 @@ export default class HistoryList extends React.Component<
         key: "topic",
         name: "Topic",
         fieldName: "topic",
-        minWidth: 100,
-        maxWidth: 100,
+        minWidth: 150,
+        maxWidth: 150,
       },
-      { key: "payload", name: "Payload", fieldName: "payload", minWidth: 200 },
+      {
+        key: "payload",
+        name: "Payload",
+        fieldName: "payload",
+        minWidth: 200,
+      },
       {
         key: "time",
         name: "Time",
         fieldName: "time",
-        minWidth: 150,
-        maxWidth: 150,
+        minWidth: 200,
+        maxWidth: 200,
       },
-      { key: "qos", name: "QoS", fieldName: "qos", minWidth: 50, maxWidth: 50 },
+      {
+        key: "qos",
+        name: "QoS",
+        fieldName: "qos",
+        minWidth: 100,
+        maxWidth: 100,
+      },
     ];
   }
 
@@ -95,16 +72,16 @@ export default class HistoryList extends React.Component<
   }
 
   public render(): JSX.Element {
-    const { items, isCompactMode } = this.state;
+    const { isCompactMode } = this.state;
 
     return (
       <div style={{ width: "100%" }}>
         <DetailsList
           componentRef={this._root}
-          items={items}
+          items={this.props.messages}
           columns={this._columns}
           onRenderDetailsHeader={this._onRenderDetailsHeader}
-          onRenderItemColumn={this._onRenderColumn}
+          onRenderItemColumn={this._onRenderItemColumn}
           compact={isCompactMode}
           selectionMode={SelectionMode.none}
         />
@@ -121,16 +98,29 @@ export default class HistoryList extends React.Component<
     );
   }
 
-  private _onRenderColumn(
-    item: MQTTMessage,
+  private _onRenderItemColumn(
+    item: HistoryItem,
     index: number,
     column: IColumn,
   ): JSX.Element {
     const value =
       item && column && column.fieldName
-        ? item[column.fieldName as keyof MQTTMessage]
+        ? item[column.fieldName as keyof HistoryItem]
         : "";
-
-    return <div data-is-focusable={true}>{value}</div>;
+    return (
+      <div data-is-focusable={true}>
+        {value instanceof Date ? value.toISOString() : value}
+      </div>
+    );
   }
 }
+
+function mapStateToProps(state: AppState): HistoryListProps {
+  return {
+    messages: state.messages,
+    topic: state.topic,
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default connect(mapStateToProps)(HistoryList as any);

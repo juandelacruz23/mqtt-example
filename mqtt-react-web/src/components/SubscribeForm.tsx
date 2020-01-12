@@ -7,10 +7,11 @@ import {
   DefaultButton,
 } from "office-ui-fabric-react";
 import { Form, Formik, FormikProps } from "formik";
-import { useSelector } from "react-redux";
-import { AppState } from "../redux/mainDuck";
+import { useSelector, useDispatch } from "react-redux";
+import { AppState, subscribe } from "../redux/mainDuck";
+import Subscription from "../types/Subscription";
 
-const defaultSubscriptionValues = {
+const defaultSubscriptionValues: Subscription = {
   topic: "message",
   qos: 0,
 };
@@ -73,14 +74,13 @@ const FormInternal = (
 };
 
 const SubscribeForm: FC = () => {
+  const dispatch = useDispatch();
   return (
     <Formik
       initialValues={defaultSubscriptionValues}
       onSubmit={(values, { setSubmitting }): void => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
+        dispatch(subscribe(values));
+        setSubmitting(false);
       }}
     >
       {FormInternal}

@@ -21,6 +21,8 @@ import {
   MQTTConnectAction,
   consoleEvent,
   messageReceived,
+  SUBSCRIBE,
+  SubscribeAction,
 } from "./mainDuck";
 import { Client } from "../mqtt-observable/MqttObservable";
 
@@ -61,9 +63,11 @@ export function sendEventsEpic(
           onConnect$,
         );
         const topic = "message";
-        const messages$ = onConnect$.pipe(
-          takeLast(1),
-          switchMapTo(MqttClient.subscribeObservable(topic)),
+        const messages$ = action$.pipe(
+          ofType<BaseAction, SubscribeAction>(SUBSCRIBE),
+          switchMap(({ payload }) =>
+            MqttClient.subscribeObservable(payload.topic),
+          ),
           map(message =>
             messageReceived({
               time: new Date(),

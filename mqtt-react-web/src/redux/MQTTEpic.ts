@@ -9,7 +9,6 @@ import {
   switchMapTo,
   take,
   takeUntil,
-  takeLast,
   share,
 } from "rxjs/operators";
 import { ofType } from "redux-observable";
@@ -23,6 +22,7 @@ import {
   messageReceived,
   SUBSCRIBE,
   SubscribeAction,
+  UNSUBSCRIBE,
 } from "./mainDuck";
 import { Client } from "../mqtt-observable/MqttObservable";
 
@@ -66,7 +66,9 @@ export function sendEventsEpic(
         const messages$ = action$.pipe(
           ofType<BaseAction, SubscribeAction>(SUBSCRIBE),
           switchMap(({ payload }) =>
-            MqttClient.subscribeObservable(payload.topic),
+            MqttClient.subscribeObservable(payload.topic).pipe(
+              takeUntil(action$.pipe(ofType(UNSUBSCRIBE))),
+            ),
           ),
           map(message =>
             messageReceived({

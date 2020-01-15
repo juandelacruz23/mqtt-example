@@ -46,6 +46,10 @@ export class Client extends Paho.Client {
         onSuccess,
         onFailure,
       });
+
+      return (): void => {
+        this.unsubscribe(filter);
+      };
     });
   }
 

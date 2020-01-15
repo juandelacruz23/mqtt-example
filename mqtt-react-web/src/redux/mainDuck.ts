@@ -10,6 +10,7 @@ export const DISCONNECT = "DISCONNECT";
 export const CONSOLE_EVENT = "CONSOLE_EVENT";
 export const MESSAGE_RECEIVED = "MESSAGE_RECEIVED";
 export const SUBSCRIBE = "SUBSCRIBE";
+export const UNSUBSCRIBE = "UNSUBSCRIBE";
 
 export interface AppAction<T> extends Action<string> {
   type: string;
@@ -49,7 +50,7 @@ export function consoleEvent(
 
 export type ConsoleEventAction = ReturnType<typeof consoleEvent>;
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+/* eslint-disable */
 export function messageReceived(newMessage: HistoryItem) {
   return {
     type: MESSAGE_RECEIVED,
@@ -65,7 +66,6 @@ export function disconnectClient(): AppAction<undefined> {
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function subscribe(subscription: Subscription) {
   return {
     type: SUBSCRIBE,
@@ -74,6 +74,15 @@ export function subscribe(subscription: Subscription) {
 }
 
 export type SubscribeAction = ReturnType<typeof subscribe>;
+
+export function unsubscribe() {
+  return {
+    type: UNSUBSCRIBE,
+  };
+}
+
+export type UnsubscribeAction = ReturnType<typeof unsubscribe>;
+/* eslint-enable */
 
 const INITIAL_STATE = {
   host: "",

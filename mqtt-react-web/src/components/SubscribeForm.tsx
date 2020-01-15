@@ -8,7 +8,12 @@ import {
 } from "office-ui-fabric-react";
 import { Form, Formik, FormikProps } from "formik";
 import { useSelector, useDispatch } from "react-redux";
-import { AppState, subscribe } from "../redux/mainDuck";
+import {
+  AppState,
+  subscribe,
+  unsubscribe,
+  UnsubscribeAction,
+} from "../redux/mainDuck";
 import Subscription from "../types/Subscription";
 
 const defaultSubscriptionValues: Subscription = {
@@ -28,6 +33,7 @@ const FormInternal = (
   const isConnected: boolean = useSelector(
     (state: AppState) => state.isConnected,
   );
+  const dispatch = useDispatch();
   const hasEmptyValues = formik.values.qos == null || !formik.values.topic;
   const disabled = hasEmptyValues || !isConnected;
   return (
@@ -67,6 +73,11 @@ const FormInternal = (
           horizontal
         >
           <DefaultButton type="submit" text="Subscribe" disabled={disabled} />
+          <DefaultButton
+            text="Unsubscribe"
+            disabled={disabled}
+            onClick={(): UnsubscribeAction => dispatch(unsubscribe())}
+          />
         </Stack>
       </Stack>
     </Form>

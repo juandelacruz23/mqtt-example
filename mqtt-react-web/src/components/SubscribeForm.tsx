@@ -76,7 +76,9 @@ const FormInternal = (
           <DefaultButton
             text="Unsubscribe"
             disabled={disabled}
-            onClick={(): UnsubscribeAction => dispatch(unsubscribe())}
+            onClick={(): UnsubscribeAction =>
+              dispatch(unsubscribe(formik.values.topic))
+            }
           />
         </Stack>
       </Stack>

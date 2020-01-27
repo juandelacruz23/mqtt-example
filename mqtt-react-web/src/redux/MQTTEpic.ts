@@ -23,6 +23,7 @@ import {
   SUBSCRIBE,
   SubscribeAction,
   UNSUBSCRIBE,
+  UnsubscribeAction,
 } from "./mainDuck";
 import { Client } from "../mqtt-observable/MqttObservable";
 
@@ -62,29 +63,47 @@ export function sendEventsEpic(
           ),
           onConnect$,
         );
-        const topic = "message";
         const messages$ = action$.pipe(
           ofType<BaseAction, SubscribeAction>(SUBSCRIBE),
           switchMap(({ payload }) =>
             MqttClient.subscribeObservable(payload.topic).pipe(
-              takeUntil(action$.pipe(ofType(UNSUBSCRIBE))),
+              map(message =>
+                messageReceived({
+                  time: new Date(),
+                  qos: message.qos,
+                  payload: message.payloadString,
+                  topic: payload.topic,
+                }),
+              ),
             ),
-          ),
-          map(message =>
-            messageReceived({
-              time: new Date(),
-              qos: message.qos,
-              payload: message.payloadString,
-              topic,
-            }),
           ),
           takeUntil(disconnect$),
         );
 
-        const consoleEvents$ = merge(connectionEvents$, disconnect$).pipe(
-          timestamp(),
-          map(consoleEvent),
+        const unsubscribe$ = action$.pipe(
+          ofType<BaseAction, UnsubscribeAction>(UNSUBSCRIBE),
+          switchMap(({ payload }) =>
+            MqttClient.unsubscribeObservable(payload).pipe(
+              map(() => `INFO - Unsubscribed. [Topic: ${payload}]`),
+              startWith(`INFO - Unsubscribing. [Topic: ${payload}]`),
+            ),
+          ),
+          takeUntil(disconnect$),
         );
+
+        const consoleEvents$ = merge(
+          connectionEvents$,
+          disconnect$,
+          action$.pipe(
+            ofType<BaseAction, SubscribeAction>(SUBSCRIBE),
+            map(
+              ({ payload }) =>
+                `INFO - Subscribing to: [Topic: ${payload.topic}, QoS: ${payload.qos}]`,
+            ),
+            takeUntil(disconnect$),
+          ),
+          unsubscribe$,
+        ).pipe(timestamp(), map(consoleEvent));
 
         return merge(consoleEvents$, messages$).pipe(
           startWith(changeValue({ isConnected: true })),

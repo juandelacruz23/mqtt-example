@@ -1,8 +1,9 @@
 import Paho, { Message } from "paho-mqtt";
-import { Observable, AsyncSubject, defer } from "rxjs";
+import { Observable, AsyncSubject, defer, Subject } from "rxjs";
 import { share } from "rxjs/operators";
 
 export class Client extends Paho.Client {
+  subscription!: Subject<Message>;
   constructor(host: string, port: number, path: string, clientId: string) {
     super(host, port, path, clientId);
   }
@@ -30,26 +31,43 @@ export class Client extends Paho.Client {
     filter: string,
     subscriptionOptions?: SubscriptionOptions,
   ): Observable<Message> {
-    return new Observable<Message>(subscribe => {
-      const onSuccess = (): void => {
-        this.onMessageArrived = (message): void => {
-          subscribe.next(message);
-        };
-      };
+    this.subscription = new Subject<Message>();
 
-      const onFailure = (e: ConnectionError): void => {
-        subscribe.error(e);
+    const onSuccess = (): void => {
+      this.onMessageArrived = (message): void => {
+        this.subscription.next(message);
       };
+    };
 
-      this.subscribe(filter, {
-        ...subscriptionOptions,
-        onSuccess,
-        onFailure,
+    const onFailure = (e: ConnectionError): void => {
+      this.subscription.error(e);
+    };
+
+    this.subscribe(filter, {
+      ...subscriptionOptions,
+      onSuccess,
+      onFailure,
+    });
+    return this.subscription.asObservable();
+  }
+
+  unsubscribeObservable(
+    filter: string,
+    options?: UnsubscriptionOptions,
+  ): Observable<void> {
+    return new Observable<void>(subscribe => {
+      this.unsubscribe(filter, {
+        ...options,
+        onSuccess: () => {
+          this.subscription.complete();
+          subscribe.next();
+          subscribe.complete();
+        },
+        onFailure: e => {
+          this.subscription.complete();
+          subscribe.error(e);
+        },
       });
-
-      return (): void => {
-        this.unsubscribe(filter);
-      };
     });
   }
 
@@ -71,6 +89,11 @@ export type ConnectionOptions = Omit<
 
 export type SubscriptionOptions = Omit<
   Paho.SubscribeOptions,
+  "onSuccess" | "onFailure" | "invocationContext"
+>;
+
+export type UnsubscriptionOptions = Omit<
+  Paho.UnsubscribeOptions,
   "onSuccess" | "onFailure" | "invocationContext"
 >;
 

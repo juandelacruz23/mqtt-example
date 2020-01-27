@@ -19,7 +19,7 @@ export interface AppAction<T> extends Action<string> {
 
 export type FixedAppAction<T> = Required<AppAction<T>>;
 
-export type BaseAction = FixedAppAction<object>;
+export type BaseAction = FixedAppAction<object | string>;
 
 export function changeValue(newValue: object): BaseAction {
   return {
@@ -75,9 +75,10 @@ export function subscribe(subscription: Subscription) {
 
 export type SubscribeAction = ReturnType<typeof subscribe>;
 
-export function unsubscribe() {
+export function unsubscribe(topic: string) {
   return {
     type: UNSUBSCRIBE,
+    payload: topic,
   };
 }
 

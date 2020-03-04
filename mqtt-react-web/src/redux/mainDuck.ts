@@ -21,7 +21,7 @@ export type FixedAppAction<T> = Required<AppAction<T>>;
 
 export type BaseAction = FixedAppAction<object | string>;
 
-export function changeValue(newValue: object): BaseAction {
+export function changeValue(newValue: object): FixedAppAction<object> {
   return {
     type: CHANGE_VALUE,
     payload: newValue,
@@ -85,7 +85,7 @@ export function unsubscribe(topic: string) {
 export type UnsubscribeAction = ReturnType<typeof unsubscribe>;
 /* eslint-enable */
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   host: "",
   isConnected: false,
   port: 0,
@@ -108,7 +108,7 @@ export type AppState = Omit<typeof INITIAL_STATE, "messages"> & {
 
 export function reducer(
   state: AppState = INITIAL_STATE,
-  action: AppAction<object> = { type: "DEFAULT" },
+  action: AppAction<object>,
 ): AppState {
   switch (action.type) {
     case CHANGE_VALUE:

@@ -74,9 +74,13 @@ export class Client extends Paho.Client {
   disconnectObservable(): Observable<void> {
     return defer(() => {
       const subject = new AsyncSubject<void>();
-      this.disconnect();
-      subject.next();
-      subject.complete();
+      try {
+        this.disconnect();
+        subject.next();
+        subject.complete();
+      } catch (e) {
+        subject.error(e);
+      }
       return subject;
     }).pipe(share());
   }

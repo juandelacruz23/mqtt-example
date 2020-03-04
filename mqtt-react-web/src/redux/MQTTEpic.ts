@@ -10,6 +10,7 @@ import {
   take,
   takeUntil,
   share,
+  catchError,
 } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import {
@@ -25,7 +26,7 @@ import {
   UNSUBSCRIBE,
   UnsubscribeAction,
 } from "./mainDuck";
-import { Client } from "../mqtt-observable/MqttObservable";
+import { Client, ConnectionError } from "../mqtt-observable/MqttObservable";
 
 export function sendEventsEpic(
   action$: Observable<BaseAction>,
@@ -43,11 +44,13 @@ export function sendEventsEpic(
         const onConnect$ = MqttClient.connectObservable().pipe(
           mapTo(
             `INFO - Connection Success [URI: ${MqttClient.host}${MqttClient.path}, ID: ${MqttClient.clientId}]`,
-          ),
+            ),
+          catchError((error:ConnectionError) => of(`ERROR - Code: ${error.errorCode}, Message: ${error.errorMessage}`)),
         );
 
         const onDisconnect$ = MqttClient.disconnectObservable().pipe(
           mapTo("INFO - Disconnecting from server."),
+          catchError(error => of(`ERROR - ${error}`)),
         );
 
         const disconnect$ = action$.pipe(

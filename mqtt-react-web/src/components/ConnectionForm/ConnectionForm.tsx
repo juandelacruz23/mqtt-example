@@ -25,6 +25,8 @@ export const formInitialValues = {
   port: 5000,
   clientId: `js-utility-${makeid()}`,
   path: "/mqtt",
+  userName: "",
+  password: "",
 };
 
 export type ConnectionFormProps = typeof formInitialValues;
@@ -79,8 +81,17 @@ function ConnectionForm(formik: FormikProps<ConnectionFormProps>): JSX.Element {
             disabled={isConnected}
             {...formik.getFieldProps("path")}
           />
-          <TextField label="Username" disabled={isConnected} />
-          <TextField label="Password" type="password" disabled={isConnected} />
+          <TextField
+            label="Username"
+            {...formik.getFieldProps("userName")}
+            disabled={isConnected}
+          />
+          <TextField
+            label="Password"
+            {...formik.getFieldProps("password")}
+            type="password"
+            disabled={isConnected}
+          />
           <TextField
             label="Keepalive"
             defaultValue="60"

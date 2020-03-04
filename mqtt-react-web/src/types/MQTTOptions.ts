@@ -3,4 +3,6 @@ export default interface MQTTOptions {
   port: number;
   path: string;
   clientId: string;
+  userName?: string;
+  password?: string;
 }

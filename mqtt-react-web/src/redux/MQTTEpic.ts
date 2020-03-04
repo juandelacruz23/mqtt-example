@@ -41,11 +41,23 @@ export function sendEventsEpic(
           payload.path,
           payload.clientId,
         );
-        const onConnect$ = MqttClient.connectObservable().pipe(
+        let connectionOptions;
+        if (payload.userName && payload.password) {
+          connectionOptions = {
+            userName: payload.userName,
+            password: payload.password,
+          };
+        }
+
+        const onConnect$ = MqttClient.connectObservable(connectionOptions).pipe(
           mapTo(
             `INFO - Connection Success [URI: ${MqttClient.host}${MqttClient.path}, ID: ${MqttClient.clientId}]`,
+          ),
+          catchError((error: ConnectionError) =>
+            of(
+              `ERROR - Code: ${error.errorCode}, Message: ${error.errorMessage}`,
             ),
-          catchError((error:ConnectionError) => of(`ERROR - Code: ${error.errorCode}, Message: ${error.errorMessage}`)),
+          ),
         );
 
         const onDisconnect$ = MqttClient.disconnectObservable().pipe(

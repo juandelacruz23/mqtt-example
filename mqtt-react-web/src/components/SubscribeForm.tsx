@@ -8,12 +8,7 @@ import {
 } from "office-ui-fabric-react";
 import { Form, Formik, FormikProps } from "formik";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  AppState,
-  subscribe,
-  unsubscribe,
-  UnsubscribeAction,
-} from "../redux/mainDuck";
+import { AppState, subscribe, unsubscribe } from "../redux/mainDuck";
 import Subscription from "../types/Subscription";
 
 const defaultSubscriptionValues: Subscription = {
@@ -76,9 +71,7 @@ const FormInternal = (
           <DefaultButton
             text="Unsubscribe"
             disabled={disabled}
-            onClick={(): UnsubscribeAction =>
-              dispatch(unsubscribe(formik.values.topic))
-            }
+            onClick={() => dispatch(unsubscribe(formik.values.topic))}
           />
         </Stack>
       </Stack>

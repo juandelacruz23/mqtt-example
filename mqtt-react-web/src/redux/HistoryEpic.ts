@@ -1,22 +1,17 @@
-import { StateObservable, ofType } from "redux-observable";
-import {
-  AppState,
-  BaseAction,
-  MESSAGE_RECEIVED,
-  MesssageReceivedAction,
-  changeValue,
-} from "./mainDuck";
+import { StateObservable } from "redux-observable";
+import { AppState, BaseAction, changeValue, messageReceived } from "./mainDuck";
 import { Observable } from "rxjs";
-import { withLatestFrom, map } from "rxjs/operators";
+import { withLatestFrom, map, filter } from "rxjs/operators";
+import { isActionOf } from "typesafe-actions";
 
 export default function HistoryEpic(
   actions$: Observable<BaseAction>,
   state$: StateObservable<AppState>,
 ): Observable<BaseAction> {
   return actions$.pipe(
-    ofType<BaseAction, MesssageReceivedAction>(MESSAGE_RECEIVED),
+    filter(isActionOf(messageReceived)),
     withLatestFrom(state$),
-    map(([action, state]: [MesssageReceivedAction, AppState]) =>
+    map(([action, state]) =>
       changeValue({ messages: [...state.messages, action.payload] }),
     ),
   );

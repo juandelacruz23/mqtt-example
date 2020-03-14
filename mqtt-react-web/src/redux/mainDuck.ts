@@ -1,4 +1,4 @@
-import { Action } from "redux";
+import { createAction, getType } from "typesafe-actions";
 import MQTTOptions from "../types/MQTTOptions";
 import HistoryItem from "../types/HistoryItem";
 import { ConsoleEvent } from "./MQTTEpic";
@@ -12,78 +12,53 @@ export const MESSAGE_RECEIVED = "MESSAGE_RECEIVED";
 export const SUBSCRIBE = "SUBSCRIBE";
 export const UNSUBSCRIBE = "UNSUBSCRIBE";
 
-export interface AppAction<T> extends Action<string> {
-  type: string;
-  payload?: T;
+export interface BaseAction {
+  readonly type: string;
+  readonly payload: object;
 }
 
-export type FixedAppAction<T> = Required<AppAction<T>>;
-
-export type BaseAction = FixedAppAction<object | string>;
-
-export function changeValue(newValue: object): FixedAppAction<object> {
-  return {
-    type: CHANGE_VALUE,
-    payload: newValue,
-  } as const;
+export interface StringAction {
+  readonly type: string;
+  readonly payload: string;
 }
 
-export function connectClient(
-  mqttOptions: MQTTOptions,
-): FixedAppAction<MQTTOptions> {
-  return {
-    type: CONNECT,
-    payload: mqttOptions,
-  } as const;
+export interface PayloadlessAction {
+  readonly type: string;
 }
 
-export type MQTTConnectAction = ReturnType<typeof connectClient>;
+export type AppAction = BaseAction | PayloadlessAction | StringAction;
 
-export function consoleEvent(
-  event: ConsoleEvent,
-): FixedAppAction<ConsoleEvent> {
-  return {
-    type: CONSOLE_EVENT,
-    payload: event,
-  } as const;
-}
+export const changeValue = createAction(
+  CHANGE_VALUE,
+  (payload: object) => payload,
+)();
 
-export type ConsoleEventAction = ReturnType<typeof consoleEvent>;
+export const connectClient = createAction(
+  CONNECT,
+  (mqttOptions: MQTTOptions) => mqttOptions,
+)();
 
-/* eslint-disable */
-export function messageReceived(newMessage: HistoryItem) {
-  return {
-    type: MESSAGE_RECEIVED,
-    payload: newMessage,
-  } as const;
-}
+export const consoleEvent = createAction(
+  CONSOLE_EVENT,
+  (event: ConsoleEvent) => event,
+)();
 
-export type MesssageReceivedAction = ReturnType<typeof messageReceived>;
+export const disconnectClient = createAction(DISCONNECT)();
 
-export function disconnectClient(): AppAction<undefined> {
-  return {
-    type: DISCONNECT,
-  };
-}
+export const messageReceived = createAction(
+  MESSAGE_RECEIVED,
+  (newMessage: HistoryItem) => newMessage,
+)();
 
-export function subscribe(subscription: Subscription) {
-  return {
-    type: SUBSCRIBE,
-    payload: subscription,
-  };
-}
+export const subscribe = createAction(
+  SUBSCRIBE,
+  (subscription: Subscription) => subscription,
+)();
 
-export type SubscribeAction = ReturnType<typeof subscribe>;
-
-export function unsubscribe(topic: string) {
-  return {
-    type: UNSUBSCRIBE,
-    payload: topic,
-  };
-}
-
-export type UnsubscribeAction = ReturnType<typeof unsubscribe>;
-/* eslint-enable */
+export const unsubscribe = createAction(
+  UNSUBSCRIBE,
+  (topic: string) => topic,
+)();
 
 export const INITIAL_STATE = {
   host: "",
@@ -108,11 +83,11 @@ export type AppState = Omit<typeof INITIAL_STATE, "messages"> & {
 
 export function reducer(
   state: AppState = INITIAL_STATE,
-  action: AppAction<object>,
+  action: BaseAction,
 ): AppState {
   switch (action.type) {
-    case CHANGE_VALUE:
-    case CONNECT:
+    case getType(changeValue):
+    case getType(connectClient):
       return {
         ...state,
         ...action.payload,

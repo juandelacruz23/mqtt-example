@@ -17,6 +17,7 @@ module.exports =  {
     "prefer-template": [2],
     "prettier/prettier": ["error", { "trailingComma": "all"} ],
     "react/prop-types": [0],
+    "@typescript-eslint/explicit-function-return-type": ["off"]
   },
   settings:  {
     react:  {

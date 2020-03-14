@@ -5,15 +5,15 @@ import ConnectionForm, {
   ConnectionFormProps,
 } from "./ConnectionForm";
 import { connect, useSelector } from "react-redux";
-import actions, { AppAction, AppState } from "../../redux/mainDuck";
-import MQTTOptions from "../../types/MQTTOptions";
+import actions, { AppState } from "../../redux/mainDuck";
 
-interface ConnectionContainerProps {
-  connectClient: (props: ConnectionFormProps) => AppAction<MQTTOptions>;
-  disconnectClient: () => AppAction<undefined>;
-}
+const mapDispatchToProps = {
+  connectClient: (props: ConnectionFormProps) => actions.connectClient(props),
+  disconnectClient: (): ReturnType<typeof actions.disconnectClient> =>
+    actions.disconnectClient(),
+};
 
-const ConnectionFormContainer: React.FC<ConnectionContainerProps> = ({
+const ConnectionFormContainer: React.FC<typeof mapDispatchToProps> = ({
   connectClient,
   disconnectClient,
 }): JSX.Element => {
@@ -32,11 +32,6 @@ const ConnectionFormContainer: React.FC<ConnectionContainerProps> = ({
       {ConnectionForm}
     </Formik>
   );
-};
-
-const mapDispatchToProps: ConnectionContainerProps = {
-  connectClient: (props: ConnectionFormProps) => actions.connectClient(props),
-  disconnectClient: () => actions.disconnectClient(),
 };
 
 export default connect(null, mapDispatchToProps)(ConnectionFormContainer);

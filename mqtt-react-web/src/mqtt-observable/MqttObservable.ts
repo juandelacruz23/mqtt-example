@@ -24,7 +24,7 @@ export class Client extends Paho.Client {
       };
       this.connect(pahoConnectionOptions);
       return subject;
-    }).pipe(share());
+    });
   }
 
   subscribeObservable(

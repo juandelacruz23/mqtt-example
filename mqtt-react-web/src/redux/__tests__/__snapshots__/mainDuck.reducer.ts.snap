@@ -17,21 +17,3 @@ Object {
   "topic": "message",
 }
 `;
-
-exports[`main reducer should return initialState as default 1`] = `
-Object {
-  "clientId": "",
-  "events": Array [
-    Object {
-      "timestamp": 1487076708000,
-      "value": "INFO - Starting Eclipse Paho JavaScript Utility.",
-    },
-  ],
-  "host": "",
-  "isConnected": false,
-  "messages": Array [],
-  "path": "",
-  "port": 0,
-  "topic": "message",
-}
-`;

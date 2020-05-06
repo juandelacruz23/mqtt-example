@@ -65,7 +65,6 @@ export function sendEventsEpic(action$: Observable<BaseAction>) {
         ofType(DISCONNECT),
         take(1),
         switchMapTo(onDisconnect$),
-        share(),
       );
 
       const connectionEvents$: Observable<string> = concat(

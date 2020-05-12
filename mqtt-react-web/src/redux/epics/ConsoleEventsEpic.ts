@@ -2,9 +2,9 @@ import { Action } from "redux";
 import { Observable } from "rxjs";
 import { withLatestFrom, map, filter } from "rxjs/operators";
 import { StateObservable } from "redux-observable";
-import { AppState, changeValue, consoleEvent } from "./mainDuck";
+import { AppState, changeValue, consoleEvent } from "../mainDuck";
 
-export function consoleEventsEpic(
+export default function consoleEventsEpic(
   actions$: Observable<Action>,
   state$: StateObservable<AppState>,
 ) {

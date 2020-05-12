@@ -21,10 +21,10 @@ import {
   subscribe,
   unsubscribe,
   disconnectClient,
-} from "./mainDuck";
-import { Client, ConnectionError } from "../mqtt-observable/MqttObservable";
+} from "../mainDuck";
+import { Client, ConnectionError } from "../../mqtt-observable/MqttObservable";
 
-export function sendEventsEpic(action$: Observable<Action>) {
+export default function MQTTEpic(action$: Observable<Action>) {
   return action$.pipe(
     filter(connectClient.match),
     switchMap(({ payload }) => {

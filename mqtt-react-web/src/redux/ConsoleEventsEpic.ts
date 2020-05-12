@@ -1,22 +1,16 @@
 import { Observable } from "rxjs";
-import { ofType, StateObservable } from "redux-observable";
-import { withLatestFrom, map } from "rxjs/operators";
-import {
-  CONSOLE_EVENT,
-  AppState,
-  changeValue,
-  BaseAction,
-  ConsoleEventAction,
-} from "./mainDuck";
+import { StateObservable } from "redux-observable";
+import { withLatestFrom, map, filter } from "rxjs/operators";
+import { AppState, changeValue, BaseAction, consoleEvent } from "./mainDuck";
 
 export function consoleEventsEpic(
   actions$: Observable<BaseAction>,
   state$: StateObservable<AppState>,
 ): Observable<BaseAction> {
   return actions$.pipe(
-    ofType<BaseAction, ConsoleEventAction>(CONSOLE_EVENT),
+    filter(consoleEvent.match),
     withLatestFrom(state$),
-    map(([consoleAction, state]: [ConsoleEventAction, AppState]) =>
+    map(([consoleAction, state]) =>
       changeValue({ events: [...state.events, consoleAction.payload] }),
     ),
   );

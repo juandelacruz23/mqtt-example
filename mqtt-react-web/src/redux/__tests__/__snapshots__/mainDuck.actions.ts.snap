@@ -3,7 +3,7 @@
 exports[`change value action should return CHANGE_VALUE with payload 1`] = `
 Object {
   "payload": Object {
-    "example": "value",
+    "path": "fake path",
   },
   "type": "CHANGE_VALUE",
 }
@@ -12,7 +12,7 @@ Object {
 exports[`change value action should return CHANGE_VALUE with payload 2`] = `
 Object {
   "payload": Object {
-    "second": "example",
+    "topic": "fakeTopic",
   },
   "type": "CHANGE_VALUE",
 }

@@ -1,31 +1,25 @@
 import React from "react";
 import { Formik } from "formik";
-import ConnectionForm, {
-  formInitialValues,
-  ConnectionFormProps,
-} from "./ConnectionForm";
-import { connect, useSelector } from "react-redux";
-import actions, { AppState } from "../../redux/mainDuck";
-
-const mapDispatchToProps = {
-  connectClient: (props: ConnectionFormProps) => actions.connectClient(props),
-  disconnectClient: (): ReturnType<typeof actions.disconnectClient> =>
-    actions.disconnectClient(),
-};
-
-const ConnectionFormContainer: React.FC<typeof mapDispatchToProps> = ({
+import { useSelector, useDispatch } from "react-redux";
+import ConnectionForm, { formInitialValues } from "./ConnectionForm";
+import {
+  AppState,
   connectClient,
   disconnectClient,
-}): JSX.Element => {
+} from "../../redux/mainDuck";
+
+const ConnectionFormContainer: React.FC = (): JSX.Element => {
   const isConnected: boolean = useSelector(
     (state: AppState) => state.isConnected,
   );
+  const dispatch = useDispatch();
   return (
     <Formik
       initialValues={formInitialValues}
       onSubmit={(values, { setSubmitting }): void => {
-        if (!isConnected) connectClient({ ...values, port: +values.port });
-        else disconnectClient();
+        if (!isConnected)
+          dispatch(connectClient({ ...values, port: +values.port }));
+        else dispatch(disconnectClient());
         setSubmitting(false);
       }}
     >
@@ -34,4 +28,4 @@ const ConnectionFormContainer: React.FC<typeof mapDispatchToProps> = ({
   );
 };
 
-export default connect(null, mapDispatchToProps)(ConnectionFormContainer);
+export default ConnectionFormContainer;

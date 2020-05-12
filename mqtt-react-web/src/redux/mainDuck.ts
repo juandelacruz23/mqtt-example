@@ -1,8 +1,8 @@
-import { createAction, getType } from "typesafe-actions";
-import MQTTOptions from "../types/MQTTOptions";
+import { createAction } from "@reduxjs/toolkit";
 import HistoryItem from "../types/HistoryItem";
-import { ConsoleEvent } from "./MQTTEpic";
+import MQTTOptions from "../types/MQTTOptions";
 import Subscription from "../types/Subscription";
+import ConsoleEvent from "../types/ConsoleEvents";
 
 const CHANGE_VALUE = "CHANGE_VALUE";
 export const CONNECT = "CONNECT";
@@ -26,40 +26,6 @@ export interface PayloadlessAction {
   readonly type: string;
 }
 
-export type AppAction = BaseAction | PayloadlessAction | StringAction;
-
-export const changeValue = createAction(
-  CHANGE_VALUE,
-  (payload: object) => payload,
-)();
-
-export const connectClient = createAction(
-  CONNECT,
-  (mqttOptions: MQTTOptions) => mqttOptions,
-)();
-
-export const consoleEvent = createAction(
-  CONSOLE_EVENT,
-  (event: ConsoleEvent) => event,
-)();
-
-export const disconnectClient = createAction(DISCONNECT)();
-
-export const messageReceived = createAction(
-  MESSAGE_RECEIVED,
-  (newMessage: HistoryItem) => newMessage,
-)();
-
-export const subscribe = createAction(
-  SUBSCRIBE,
-  (subscription: Subscription) => subscription,
-)();
-
-export const unsubscribe = createAction(
-  UNSUBSCRIBE,
-  (topic: string) => topic,
-)();
-
 export const INITIAL_STATE = {
   host: "",
   isConnected: false,
@@ -81,13 +47,29 @@ export type AppState = Omit<typeof INITIAL_STATE, "messages"> & {
   messages: HistoryItem[];
 };
 
+export type AppAction = BaseAction | PayloadlessAction | StringAction;
+
+export const changeValue = createAction<Partial<AppState>>(CHANGE_VALUE);
+
+export const connectClient = createAction<MQTTOptions>(CONNECT);
+
+export const consoleEvent = createAction<ConsoleEvent>(CONSOLE_EVENT);
+
+export const disconnectClient = createAction(DISCONNECT);
+
+export const messageReceived = createAction<HistoryItem>(MESSAGE_RECEIVED);
+
+export const subscribe = createAction<Subscription>(SUBSCRIBE);
+
+export const unsubscribe = createAction<string>(UNSUBSCRIBE);
+
 export function reducer(
   state: AppState = INITIAL_STATE,
   action: BaseAction,
 ): AppState {
   switch (action.type) {
-    case getType(changeValue):
-    case getType(connectClient):
+    case changeValue.type:
+    case connectClient.type:
       return {
         ...state,
         ...action.payload,

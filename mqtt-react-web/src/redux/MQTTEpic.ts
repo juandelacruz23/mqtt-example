@@ -9,27 +9,24 @@ import {
   switchMapTo,
   take,
   takeUntil,
-  share,
   catchError,
   filter,
 } from "rxjs/operators";
-import { ofType } from "redux-observable";
 import {
   BaseAction,
   changeValue,
   consoleEvent,
   messageReceived,
-  DISCONNECT,
   connectClient,
   subscribe,
   unsubscribe,
+  disconnectClient,
 } from "./mainDuck";
 import { Client, ConnectionError } from "../mqtt-observable/MqttObservable";
-import { isActionOf } from "typesafe-actions";
 
 export function sendEventsEpic(action$: Observable<BaseAction>) {
   return action$.pipe(
-    filter(isActionOf(connectClient)),
+    filter(connectClient.match),
     switchMap(({ payload }) => {
       const MqttClient = new Client(
         payload.host,
@@ -62,7 +59,7 @@ export function sendEventsEpic(action$: Observable<BaseAction>) {
       );
 
       const disconnect$ = action$.pipe(
-        ofType(DISCONNECT),
+        filter(disconnectClient.match),
         take(1),
         switchMapTo(onDisconnect$),
       );
@@ -74,7 +71,7 @@ export function sendEventsEpic(action$: Observable<BaseAction>) {
         onConnect$,
       );
       const messages$ = action$.pipe(
-        filter(isActionOf(subscribe)),
+        filter(subscribe.match),
         switchMap(({ payload }) =>
           MqttClient.subscribeObservable(payload.topic).pipe(
             map(message =>
@@ -91,7 +88,7 @@ export function sendEventsEpic(action$: Observable<BaseAction>) {
       );
 
       const unsubscribe$ = action$.pipe(
-        filter(isActionOf(unsubscribe)),
+        filter(unsubscribe.match),
         switchMap(({ payload }) =>
           MqttClient.unsubscribeObservable(payload).pipe(
             map(() => `INFO - Unsubscribed. [Topic: ${payload}]`),
@@ -105,7 +102,7 @@ export function sendEventsEpic(action$: Observable<BaseAction>) {
         connectionEvents$,
         disconnect$,
         action$.pipe(
-          filter(isActionOf(subscribe)),
+          filter(subscribe.match),
           map(
             ({ payload }) =>
               `INFO - Subscribing to: [Topic: ${payload.topic}, QoS: ${payload.qos}]`,
@@ -121,9 +118,4 @@ export function sendEventsEpic(action$: Observable<BaseAction>) {
       );
     }),
   );
-}
-
-export interface ConsoleEvent {
-  value: string;
-  timestamp: number;
 }

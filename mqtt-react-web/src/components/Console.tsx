@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../redux/mainDuck";
-import { ConsoleEvent } from "../redux/MQTTEpic";
+import ConsoleEvent from "../types/ConsoleEvents";
 
 const Console: React.FC = () => {
   const events: ConsoleEvent[] = useSelector((state: AppState) => state.events);

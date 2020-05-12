@@ -1,12 +1,13 @@
-import { StateObservable } from "redux-observable";
+import { Action } from "redux";
 import { Observable } from "rxjs";
+import { StateObservable } from "redux-observable";
 import { withLatestFrom, map, filter } from "rxjs/operators";
-import { AppState, BaseAction, changeValue, messageReceived } from "./mainDuck";
+import { AppState, changeValue, messageReceived } from "./mainDuck";
 
 export default function HistoryEpic(
-  actions$: Observable<BaseAction>,
+  actions$: Observable<Action>,
   state$: StateObservable<AppState>,
-): Observable<BaseAction> {
+) {
   return actions$.pipe(
     filter(messageReceived.match),
     withLatestFrom(state$),

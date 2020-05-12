@@ -1,7 +1,7 @@
-import { createStore, Store, applyMiddleware } from "redux";
+import { createStore, Store, applyMiddleware, Action } from "redux";
 import { combineEpics, createEpicMiddleware } from "redux-observable";
 
-import { INITIAL_STATE, reducer, AppState, BaseAction } from "./mainDuck";
+import { INITIAL_STATE, reducer, AppState } from "./mainDuck";
 import { sendEventsEpic } from "./MQTTEpic";
 import { consoleEventsEpic } from "./ConsoleEventsEpic";
 import historyEpic from "./HistoryEpic";
@@ -12,11 +12,11 @@ export const rootEpic = combineEpics(
   historyEpic,
 );
 
-const epicMiddleware = createEpicMiddleware<BaseAction, BaseAction, AppState>();
+const epicMiddleware = createEpicMiddleware<Action, Action, AppState>();
 
-export const store: Store<AppState, BaseAction> = createStore<
+export const store: Store<AppState, Action> = createStore<
   AppState,
-  BaseAction,
+  Action,
   {},
   {}
 >(reducer, INITIAL_STATE, applyMiddleware(epicMiddleware));

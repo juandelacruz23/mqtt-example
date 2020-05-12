@@ -1,12 +1,13 @@
+import { Action } from "redux";
 import { Observable } from "rxjs";
-import { StateObservable } from "redux-observable";
 import { withLatestFrom, map, filter } from "rxjs/operators";
-import { AppState, changeValue, BaseAction, consoleEvent } from "./mainDuck";
+import { StateObservable } from "redux-observable";
+import { AppState, changeValue, consoleEvent } from "./mainDuck";
 
 export function consoleEventsEpic(
-  actions$: Observable<BaseAction>,
+  actions$: Observable<Action>,
   state$: StateObservable<AppState>,
-): Observable<BaseAction> {
+) {
   return actions$.pipe(
     filter(consoleEvent.match),
     withLatestFrom(state$),

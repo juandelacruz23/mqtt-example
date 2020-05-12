@@ -1,22 +1,8 @@
-import { createAction } from "@reduxjs/toolkit";
+import { createAction, createReducer } from "@reduxjs/toolkit";
 import HistoryItem from "../types/HistoryItem";
 import MQTTOptions from "../types/MQTTOptions";
 import Subscription from "../types/Subscription";
 import ConsoleEvent from "../types/ConsoleEvents";
-
-export interface BaseAction {
-  readonly type: string;
-  readonly payload: object;
-}
-
-export interface StringAction {
-  readonly type: string;
-  readonly payload: string;
-}
-
-export interface PayloadlessAction {
-  readonly type: string;
-}
 
 export const INITIAL_STATE = {
   host: "",
@@ -39,8 +25,6 @@ export type AppState = Omit<typeof INITIAL_STATE, "messages"> & {
   messages: HistoryItem[];
 };
 
-export type AppAction = BaseAction | PayloadlessAction | StringAction;
-
 export const changeValue = createAction<Partial<AppState>>("CHANGE_VALUE");
 
 export const connectClient = createAction<MQTTOptions>("CONNECT");
@@ -55,21 +39,14 @@ export const subscribe = createAction<Subscription>("SUBSCRIBE");
 
 export const unsubscribe = createAction<string>("UNSUBSCRIBE");
 
-export function reducer(
-  state: AppState = INITIAL_STATE,
-  action: BaseAction,
-): AppState {
-  switch (action.type) {
-    case changeValue.type:
-    case connectClient.type:
-      return {
-        ...state,
-        ...action.payload,
-      };
-    default:
-      return state;
-  }
-}
+export const reducer = createReducer<AppState>(INITIAL_STATE, builder =>
+  builder
+    .addCase(changeValue, (state, action) => ({ ...state, ...action.payload }))
+    .addCase(connectClient, (state, action) => ({
+      ...state,
+      ...action.payload,
+    })),
+);
 
 export default {
   connectClient,

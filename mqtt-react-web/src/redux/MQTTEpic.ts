@@ -1,3 +1,4 @@
+import { Action } from "redux";
 import { Observable, of, concat, merge } from "rxjs";
 import {
   map,
@@ -13,7 +14,6 @@ import {
   filter,
 } from "rxjs/operators";
 import {
-  BaseAction,
   changeValue,
   consoleEvent,
   messageReceived,
@@ -24,7 +24,7 @@ import {
 } from "./mainDuck";
 import { Client, ConnectionError } from "../mqtt-observable/MqttObservable";
 
-export function sendEventsEpic(action$: Observable<BaseAction>) {
+export function sendEventsEpic(action$: Observable<Action>) {
   return action$.pipe(
     filter(connectClient.match),
     switchMap(({ payload }) => {

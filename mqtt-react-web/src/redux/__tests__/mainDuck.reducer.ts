@@ -1,4 +1,4 @@
-import "../date.mock";
+import "./date.mock";
 import { reducer, changeValue, connectClient } from "../mainDuck";
 
 describe("main reducer", () => {

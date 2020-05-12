@@ -4,14 +4,6 @@ import MQTTOptions from "../types/MQTTOptions";
 import Subscription from "../types/Subscription";
 import ConsoleEvent from "../types/ConsoleEvents";
 
-const CHANGE_VALUE = "CHANGE_VALUE";
-export const CONNECT = "CONNECT";
-export const DISCONNECT = "DISCONNECT";
-export const CONSOLE_EVENT = "CONSOLE_EVENT";
-export const MESSAGE_RECEIVED = "MESSAGE_RECEIVED";
-export const SUBSCRIBE = "SUBSCRIBE";
-export const UNSUBSCRIBE = "UNSUBSCRIBE";
-
 export interface BaseAction {
   readonly type: string;
   readonly payload: object;
@@ -49,19 +41,19 @@ export type AppState = Omit<typeof INITIAL_STATE, "messages"> & {
 
 export type AppAction = BaseAction | PayloadlessAction | StringAction;
 
-export const changeValue = createAction<Partial<AppState>>(CHANGE_VALUE);
+export const changeValue = createAction<Partial<AppState>>("CHANGE_VALUE");
 
-export const connectClient = createAction<MQTTOptions>(CONNECT);
+export const connectClient = createAction<MQTTOptions>("CONNECT");
 
-export const consoleEvent = createAction<ConsoleEvent>(CONSOLE_EVENT);
+export const consoleEvent = createAction<ConsoleEvent>("CONSOLE_EVENT");
 
-export const disconnectClient = createAction(DISCONNECT);
+export const disconnectClient = createAction("DISCONNECT");
 
-export const messageReceived = createAction<HistoryItem>(MESSAGE_RECEIVED);
+export const messageReceived = createAction<HistoryItem>("MESSAGE_RECEIVED");
 
-export const subscribe = createAction<Subscription>(SUBSCRIBE);
+export const subscribe = createAction<Subscription>("SUBSCRIBE");
 
-export const unsubscribe = createAction<string>(UNSUBSCRIBE);
+export const unsubscribe = createAction<string>("UNSUBSCRIBE");
 
 export function reducer(
   state: AppState = INITIAL_STATE,

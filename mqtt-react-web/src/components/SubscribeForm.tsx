@@ -8,8 +8,9 @@ import {
 } from "office-ui-fabric-react";
 import { Form, Formik, FormikProps } from "formik";
 import { useSelector, useDispatch } from "react-redux";
-import { AppState, subscribe, unsubscribe } from "../redux/mainDuck";
 import Subscription from "../types/Subscription";
+import { AppState } from "../redux";
+import { unsubscribe, subscribe } from "../redux/slices/mqttConfigSlice";
 
 const defaultSubscriptionValues: Subscription = {
   topic: "message",
@@ -26,7 +27,7 @@ const FormInternal = (
   formik: FormikProps<{ qos: number; topic: string }>,
 ): JSX.Element => {
   const isConnected: boolean = useSelector(
-    (state: AppState) => state.isConnected,
+    (state: AppState) => state.mqttConfig.isConnected,
   );
   const dispatch = useDispatch();
   const hasEmptyValues = formik.values.qos == null || !formik.values.topic;

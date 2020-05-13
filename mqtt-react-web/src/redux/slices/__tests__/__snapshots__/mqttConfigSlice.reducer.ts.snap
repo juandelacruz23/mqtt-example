@@ -3,15 +3,8 @@
 exports[`main reducer should handle CONNECT action with initialState 1`] = `
 Object {
   "clientId": "fake client id",
-  "events": Array [
-    Object {
-      "timestamp": 1487076708000,
-      "value": "INFO - Starting Eclipse Paho JavaScript Utility.",
-    },
-  ],
   "host": "fake host",
   "isConnected": false,
-  "messages": Array [],
   "path": "fake path",
   "port": 5000,
   "topic": "message",

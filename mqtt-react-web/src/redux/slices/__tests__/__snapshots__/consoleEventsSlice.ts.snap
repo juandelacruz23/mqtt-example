@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`slice add 1`] = `
+Object {
+  "payload": Object {
+    "timestamp": 1487076708000,
+    "value": "fake value",
+  },
+  "type": "consoleEvents/add",
+}
+`;
+
+exports[`slice clear 1`] = `
+Object {
+  "payload": undefined,
+  "type": "consoleEvents/clear",
+}
+`;

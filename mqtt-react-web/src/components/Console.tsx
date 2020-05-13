@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { AppState } from "../redux/mainDuck";
 import ConsoleEvent from "../types/ConsoleEvents";
+import { AppState } from "../redux";
 
 const Console: React.FC = () => {
-  const events: ConsoleEvent[] = useSelector((state: AppState) => state.events);
+  const events: ConsoleEvent[] = useSelector(
+    (state: AppState) => state.consoleEvents,
+  );
   return (
     <div id="console" className="full-width">
       {events.map(event => (

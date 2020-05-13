@@ -12,7 +12,7 @@ import {
 import { Form, FormikProps } from "formik";
 import makeid from "../../utils/makeId";
 import { useSelector } from "react-redux";
-import { AppState } from "../../redux/mainDuck";
+import { AppState } from "../../redux";
 
 const QoSOptions: IComboBoxOption[] = [
   { key: 0, text: "0" },
@@ -33,7 +33,7 @@ export type ConnectionFormProps = typeof formInitialValues;
 
 function ConnectionForm(formik: FormikProps<ConnectionFormProps>): JSX.Element {
   const isConnected: boolean = useSelector(
-    (state: AppState) => state.isConnected,
+    (state: AppState) => state.mqttConfig.isConnected,
   );
 
   return (

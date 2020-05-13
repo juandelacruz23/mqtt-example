@@ -8,8 +8,8 @@ import {
   SelectionMode,
 } from "office-ui-fabric-react";
 import { connect } from "react-redux";
-import { AppState } from "../redux/mainDuck";
 import HistoryItem from "../types/HistoryItem";
+import { AppState } from "../redux";
 
 export interface HistoryListState {
   showItemIndexInView: boolean;
@@ -109,7 +109,7 @@ class HistoryList extends React.Component<HistoryListProps, HistoryListState> {
         : "";
     return (
       <div data-is-focusable={true}>
-        {value instanceof Date ? value.toISOString() : value}
+        {column.fieldName === "time" ? new Date(value).toISOString() : value}
       </div>
     );
   }
@@ -118,7 +118,7 @@ class HistoryList extends React.Component<HistoryListProps, HistoryListState> {
 function mapStateToProps(state: AppState): HistoryListProps {
   return {
     messages: state.messages,
-    topic: state.topic,
+    topic: state.mqttConfig.topic,
   };
 }
 

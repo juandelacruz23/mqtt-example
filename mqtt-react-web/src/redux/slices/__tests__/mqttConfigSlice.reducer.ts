@@ -1,5 +1,4 @@
-import "./date.mock";
-import { reducer, changeValue, connectClient } from "../mainDuck";
+import reducer, { changeValue, connectClient } from "../mqttConfigSlice";
 
 describe("main reducer", () => {
   it("should handle CHANGE_VALUE action with initialState", () => {

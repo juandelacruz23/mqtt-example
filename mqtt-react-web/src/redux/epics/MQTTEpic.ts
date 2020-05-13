@@ -13,16 +13,18 @@ import {
   catchError,
   filter,
 } from "rxjs/operators";
+
 import {
-  changeValue,
-  consoleEvent,
-  messageReceived,
   connectClient,
+  disconnectClient,
   subscribe,
   unsubscribe,
-  disconnectClient,
-} from "../mainDuck";
+  changeValue,
+} from "../slices/mqttConfigSlice";
+import { messageReceived } from "../slices/messagesSlice";
+import { add } from "../slices/consoleEventsSlice";
 import { Client, ConnectionError } from "../../mqtt-observable/MqttObservable";
+import getTimestamp from "../../utils/getTimestamp";
 
 export default function MQTTEpic(action$: Observable<Action>) {
   return action$.pipe(
@@ -76,7 +78,7 @@ export default function MQTTEpic(action$: Observable<Action>) {
           MqttClient.subscribeObservable(payload.topic).pipe(
             map(message =>
               messageReceived({
-                time: new Date(),
+                time: getTimestamp(),
                 qos: message.qos,
                 payload: message.payloadString,
                 topic: payload.topic,
@@ -110,7 +112,7 @@ export default function MQTTEpic(action$: Observable<Action>) {
           takeUntil(disconnect$),
         ),
         unsubscribe$,
-      ).pipe(timestamp(), map(consoleEvent));
+      ).pipe(timestamp(), map(add));
 
       return merge(consoleEvents$, messages$).pipe(
         startWith(changeValue({ isConnected: true })),

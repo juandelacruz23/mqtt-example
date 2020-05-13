@@ -2,15 +2,15 @@ import React from "react";
 import { Formik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import ConnectionForm, { formInitialValues } from "./ConnectionForm";
+import { AppState } from "../../redux";
 import {
-  AppState,
   connectClient,
   disconnectClient,
-} from "../../redux/mainDuck";
+} from "../../redux/slices/mqttConfigSlice";
 
 const ConnectionFormContainer: React.FC = (): JSX.Element => {
   const isConnected: boolean = useSelector(
-    (state: AppState) => state.isConnected,
+    (state: AppState) => state.mqttConfig.isConnected,
   );
   const dispatch = useDispatch();
   return (

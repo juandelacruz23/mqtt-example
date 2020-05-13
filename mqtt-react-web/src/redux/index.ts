@@ -1,24 +1,32 @@
-import { createStore, Store, applyMiddleware, Action } from "redux";
+import { combineReducers } from "redux";
 import { combineEpics, createEpicMiddleware } from "redux-observable";
 
-import { INITIAL_STATE, reducer, AppState } from "./mainDuck";
-import { sendEventsEpic } from "./MQTTEpic";
-import { consoleEventsEpic } from "./ConsoleEventsEpic";
-import historyEpic from "./HistoryEpic";
+import MQTTEpic from "./epics/MQTTEpic";
+import mqttConfigReducer from "./slices/mqttConfigSlice";
+import consoleEventsReducer from "./slices/consoleEventsSlice";
+import messagesReducer from "./slices/messagesSlice";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
-export const rootEpic = combineEpics(
-  sendEventsEpic,
-  consoleEventsEpic,
-  historyEpic,
-);
+const rootReducer = combineReducers({
+  mqttConfig: mqttConfigReducer,
+  consoleEvents: consoleEventsReducer,
+  messages: messagesReducer,
+});
 
-const epicMiddleware = createEpicMiddleware<Action, Action, AppState>();
+export type AppState = ReturnType<typeof rootReducer>;
 
-export const store: Store<AppState, Action> = createStore<
-  AppState,
-  Action,
-  {},
-  {}
->(reducer, INITIAL_STATE, applyMiddleware(epicMiddleware));
+export const rootEpic = combineEpics(MQTTEpic);
+
+const epicMiddleware = createEpicMiddleware();
+
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: [
+    ...getDefaultMiddleware({
+      thunk: false, // or true if you want to use thunks
+    }),
+    epicMiddleware,
+  ],
+});
 
 epicMiddleware.run(rootEpic);

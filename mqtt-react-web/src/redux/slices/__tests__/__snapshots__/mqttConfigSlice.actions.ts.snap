@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+Object {
+  "payload": Object {
+    "clientId": "fake id",
+    "host": "fake host",
+    "path": "path",
+    "port": 1234,
+  },
+  "type": "config/CONNECT",
+}
+`;
+
+exports[` 2`] = `
+Object {
+  "payload": undefined,
+  "type": "config/DISCONNECT",
+}
+`;
+
+exports[` 3`] = `
+Object {
+  "payload": Object {
+    "qos": 0,
+    "topic": "fake topic",
+  },
+  "type": "config/SUBSCRIBE",
+}
+`;
+
+exports[` 4`] = `
+Object {
+  "payload": "fake topic",
+  "type": "config/UNSUBSCRIBE",
+}
+`;
+
+exports[`change value action should return CHANGE_VALUE with payload 1`] = `
+Object {
+  "payload": Object {
+    "path": "fake path",
+  },
+  "type": "config/CHANGE_VALUE",
+}
+`;
+
+exports[`change value action should return CHANGE_VALUE with payload 2`] = `
+Object {
+  "payload": Object {
+    "topic": "fakeTopic",
+  },
+  "type": "config/CHANGE_VALUE",
+}
+`;
